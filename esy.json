@@ -1,0 +1,36 @@
+{
+  "name": "graphql-sdl-parser",
+  "version": "0.1.0",
+  "description": "GraphQL SDL Parser",
+  "license": "MIT",
+  "esy": {
+    "build": "dune build -p #{self.name}",
+    "buildDev": "refmterr dune build --promote-install-files --root . --only-package #{self.name}",
+    "NOTE": "Optional release Section. Customizes result of `esy release`",
+    "release": {
+      "rewritePrefix": true,
+      "bin": ["bin"]
+    }
+  },
+  "scripts": {
+    "test": "esy x Bin",
+    "format": "esy dune build @fmt --auto-promote",
+    "doc": "esy dune build @doc"
+  },
+  "dependencies": {
+    "@opam/dune": ">=2.6",
+    "@esy-ocaml/reason": ">= 3.6.0 < 4.0.0",
+    "@opam/yojson": "~1.7.0",
+    "@opam/fmt": "~0.8.9",
+    "ocaml": "~4.10.0",
+    "@opam/graphql": "~0.13.0",
+    "@opam/graphql_parser": "~0.13.0"
+  },
+  "devDependencies": {
+    "refmterr": "*",
+    "@opam/ocaml-lsp-server": ">= 1.2.0",
+    "@opam/ppx_expect": "v0.14.0",
+    "@opam/ppx_blob": "0.7.2",
+    "@opam/ppx_deriving": "5.1"
+  }
+}
