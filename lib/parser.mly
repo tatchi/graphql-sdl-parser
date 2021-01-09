@@ -3,6 +3,8 @@
 %}
 
 /* Token definitions */
+%token LBRACE
+%token RBRACE
 %token TYPE
 %token ENUM
 %token <string> IDENTIFIER
@@ -30,8 +32,14 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | TYPE name=Name { {name } }
+  | TYPE name=Name fields=loption(Fields) { {name; fields } }
   ;
+
+Fields:
+  | LBRACE nonempty_list(Field) RBRACE { $2 }
+
+Field: 
+  | IDENTIFIER { $1 }
 
 EnumTypeDefinition:
   | ENUM name=Name { {name } }

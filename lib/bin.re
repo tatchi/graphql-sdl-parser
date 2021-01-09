@@ -26,7 +26,9 @@ let parse_program = lexbuf =>
     exit(-1);
   };
 
-let lexbuf = Lexing.from_string("type User");
+let lexbuf = Lexing.from_string({|
+  type User {}
+|});
 
 let ast = parse_program(lexbuf);
 

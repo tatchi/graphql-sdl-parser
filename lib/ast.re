@@ -1,7 +1,10 @@
 type nameType =
   | Name({value: string});
 
-type objectType = {name: nameType};
+type objectType = {
+  name: nameType,
+  fields: list(string),
+};
 type enumType = {name: nameType};
 
 type typeDefinition =
@@ -28,6 +31,7 @@ let objectToJson = (object_: objectType) =>
   `Assoc([
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
+    ("fields", `List(object_.fields |> List.map(field => `String(field)))),
   ]);
 
 let enumToJson = enum =>

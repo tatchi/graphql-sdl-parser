@@ -23,6 +23,8 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | newline { next_line lexbuf; read_token lexbuf }
+  | "{" { LBRACE }
+  | "}" { RBRACE }
   | "type" { TYPE }
   | "enum" { ENUM }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
