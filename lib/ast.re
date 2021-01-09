@@ -1,11 +1,20 @@
+type loc = (Lexing.position, Lexing.position);
+
 type nameType =
-  | Name({value: string});
+  | Name({
+      value: string,
+      loc,
+    });
 
 type objectType = {
   name: nameType,
   fields: list(string),
+  loc,
 };
-type enumType = {name: nameType};
+type enumType = {
+  name: nameType,
+  loc,
+};
 
 type typeDefinition =
   // | Scalar(ScalarType<'a, T>),
@@ -19,25 +28,40 @@ type definition =
   | TypeDefinition(typeDefinition);
 // | DirectiveDefinition(string);
 
-type document = {definitions: list(definition)};
+type document = {definitions: list(definition), loc};
+
+let locToJson = ((startPos, endPos): loc) => (
+  "loc",
+  `Assoc([
+    ("start", `Int(startPos.pos_cnum)),
+    ("end", `Int(endPos.pos_cnum)),
+  ]),
+);
 
 let nameToJson = nameType =>
   switch (nameType) {
   | Name(name) =>
-    `Assoc([("kind", `String("Name")), ("value", `String(name.value))])
+    `Assoc([
+      ("kind", `String("Name")),
+      ("value", `String(name.value)),
+      locToJson(name.loc),
+    ])
   };
 
-let objectToJson = (object_: objectType) =>
+let objectToJson = (object_: objectType) => {
   `Assoc([
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
     ("fields", `List(object_.fields |> List.map(field => `String(field)))),
+    locToJson(object_.loc),
   ]);
+};
 
 let enumToJson = enum =>
   `Assoc([
     ("kind", `String("EnumTypeDefinition")),
     ("name", nameToJson(enum.name)),
+    locToJson(enum.loc)
   ]);
 
 let typeDefinitionToJson = typeDefinition =>
@@ -58,4 +82,5 @@ let toJson = document =>
       "definitions",
       `List(document.definitions |> List.map(definitionToJson)),
     ),
+    locToJson(document.loc)
   ]);

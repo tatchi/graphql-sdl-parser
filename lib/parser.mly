@@ -19,7 +19,7 @@
 %% /* Start grammar productions */
 
 document: 
-  | definitions=list(Definition) EOF { {definitions} }
+  | definitions=list(Definition) EOF { {definitions; loc=$loc} }
   ;
 
 Definition:
@@ -32,7 +32,7 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | TYPE name=Name fields=loption(Fields) { {name; fields } }
+  | TYPE name=Name fields=loption(Fields) { {name; fields; loc=$loc } }
   ;
 
 Fields:
@@ -42,9 +42,9 @@ Field:
   | IDENTIFIER { $1 }
 
 EnumTypeDefinition:
-  | ENUM name=Name { {name } }
+  | ENUM name=Name { {name; loc=$loc } }
   ;
 
 Name:
-  | IDENTIFIER { Name({value=$1}) }
+  | IDENTIFIER { Name({value=$1; loc=$loc}) }
   ;
