@@ -2,7 +2,7 @@
  (name graphql_sdl_parser)
  (public_name graphql-sdl-parser)
  (modules parser lexer ast)
- (libraries graphql graphql_parser yojson))
+ (libraries graphql graphql_parser yojson menhirLib))
 
 (ocamllex lexer)
 

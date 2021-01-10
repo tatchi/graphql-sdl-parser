@@ -35,6 +35,7 @@ let locToJson = ((startPos, endPos): loc) => (
   `Assoc([
     ("start", `Int(startPos.pos_cnum)),
     ("end", `Int(endPos.pos_cnum)),
+    // ("menhir", `String(MenhirLib.LexerUtil.range((startPos, endPos)))),
   ]),
 );
 
