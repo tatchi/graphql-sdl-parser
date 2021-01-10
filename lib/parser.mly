@@ -40,7 +40,10 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | Name COLON Name { {name=$1;type_=NamedType($3);loc=$loc} }
+  | Name COLON NamedType { {name=$1;type_=$3;loc=$loc} }
+
+NamedType:
+  | Name { NamedType({name=$1; loc=$loc}) }
 
 EnumTypeDefinition:
   | ENUM name=Name { {name; loc=$loc } }

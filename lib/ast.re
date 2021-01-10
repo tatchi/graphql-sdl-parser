@@ -7,7 +7,14 @@ type nameType =
     });
 
 type fieldType =
-  | NamedType(nameType);
+  | NamedType({
+      name: nameType,
+      loc,
+    });
+  // | ListType({
+  //     type_: fieldType,
+  //     loc,
+  //   });
 
 type field = {
   name: nameType,
@@ -66,7 +73,8 @@ let fieldTypeToJson = fieldType =>
   | NamedType(namedType) =>
     `Assoc([
       ("kind", `String("NamedType")),
-      ("name", nameToJson(namedType)),
+      ("name", nameToJson(namedType.name)),
+      locToJson(namedType.loc),
     ])
   };
 
