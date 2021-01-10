@@ -26,7 +26,7 @@ let parse_program = lexbuf =>
     exit(-1);
   };
 let lexbuf = Lexing.from_string({|type User {
-  username: [String]
+  username: [String!]!
 }|});
 
 let ast = parse_program(lexbuf);

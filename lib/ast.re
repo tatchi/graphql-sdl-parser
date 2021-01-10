@@ -14,6 +14,10 @@ type fieldType =
   | ListType({
       type_: fieldType,
       loc,
+    })
+  | NonNullType({
+      type_: fieldType,
+      loc,
     });
 
 type field = {
@@ -81,6 +85,12 @@ let rec fieldTypeToJson = fieldType =>
       ("kind", `String("ListType")),
       ("type", fieldTypeToJson(listType.type_)),
       locToJson(listType.loc),
+    ])
+  | NonNullType(nonNullType) =>
+    `Assoc([
+      ("kind", `String("NonNullType")),
+      ("type", fieldTypeToJson(nonNullType.type_)),
+      locToJson(nonNullType.loc),
     ])
   };
 

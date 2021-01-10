@@ -28,6 +28,7 @@ rule read_token =
   | "[" { LBRACKET }
   | "]" { RBRACKET }
   | ":" { COLON }
+  | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
   | "enum" { ENUM }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
