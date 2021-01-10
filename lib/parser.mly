@@ -5,6 +5,8 @@
 /* Token definitions */
 %token LBRACE
 %token RBRACE
+%token LBRACKET
+%token RBRACKET
 %token COLON
 %token TYPE
 %token ENUM
@@ -40,7 +42,14 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | Name COLON NamedType { {name=$1;type_=$3;loc=$loc} }
+  | Name COLON FieldType { {name=$1;type_=$3;loc=$loc} }
+
+FieldType:
+  | NamedType { $1 }
+  | ListType { $1 }
+
+ListType:
+  | LBRACKET FieldType RBRACKET { ListType({type_=$2; loc=$loc}) }
 
 NamedType:
   | Name { NamedType({name=$1; loc=$loc}) }

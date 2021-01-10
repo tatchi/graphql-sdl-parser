@@ -10,11 +10,11 @@ type fieldType =
   | NamedType({
       name: nameType,
       loc,
+    })
+  | ListType({
+      type_: fieldType,
+      loc,
     });
-  // | ListType({
-  //     type_: fieldType,
-  //     loc,
-  //   });
 
 type field = {
   name: nameType,
@@ -68,13 +68,19 @@ let nameToJson = nameType =>
     ])
   };
 
-let fieldTypeToJson = fieldType =>
+let rec fieldTypeToJson = fieldType =>
   switch (fieldType) {
   | NamedType(namedType) =>
     `Assoc([
       ("kind", `String("NamedType")),
       ("name", nameToJson(namedType.name)),
       locToJson(namedType.loc),
+    ])
+  | ListType(listType) =>
+    `Assoc([
+      ("kind", `String("ListType")),
+      ("type", fieldTypeToJson(listType.type_)),
+      locToJson(listType.loc),
     ])
   };
 
