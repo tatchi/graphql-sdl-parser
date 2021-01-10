@@ -25,9 +25,8 @@ let parse_program = lexbuf =>
     print_endline(error_msg);
     exit(-1);
   };
-
 let lexbuf = Lexing.from_string({|type User {
-  username
+  username: String
 }
 type Second|});
 

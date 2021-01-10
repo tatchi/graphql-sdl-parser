@@ -5,6 +5,7 @@
 /* Token definitions */
 %token LBRACE
 %token RBRACE
+%token COLON
 %token TYPE
 %token ENUM
 %token <string> IDENTIFIER
@@ -39,7 +40,7 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | IDENTIFIER { $1 }
+  | Name COLON Name { {name=$1;type_=NamedType($3);loc=$loc} }
 
 EnumTypeDefinition:
   | ENUM name=Name { {name; loc=$loc } }

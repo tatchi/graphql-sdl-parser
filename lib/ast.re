@@ -6,9 +6,18 @@ type nameType =
       loc,
     });
 
+type fieldType =
+  | NamedType(nameType);
+
+type field = {
+  name: nameType,
+  type_: fieldType,
+  loc,
+};
+
 type objectType = {
   name: nameType,
-  fields: list(string),
+  fields: list(field),
   loc,
 };
 type enumType = {
@@ -28,7 +37,10 @@ type definition =
   | TypeDefinition(typeDefinition);
 // | DirectiveDefinition(string);
 
-type document = {definitions: list(definition), loc};
+type document = {
+  definitions: list(definition),
+  loc,
+};
 
 let locToJson = ((startPos, endPos): loc) => (
   "loc",
@@ -49,11 +61,28 @@ let nameToJson = nameType =>
     ])
   };
 
+let fieldTypeToJson = fieldType =>
+  switch (fieldType) {
+  | NamedType(namedType) =>
+    `Assoc([
+      ("kind", `String("NamedType")),
+      ("name", nameToJson(namedType)),
+    ])
+  };
+
+let fieldToJson = (field: field) =>
+  `Assoc([
+    ("kind", `String("FieldDefinition")),
+    ("name", nameToJson(field.name)),
+    ("type", fieldTypeToJson(field.type_)),
+    locToJson(field.loc),
+  ]);
+
 let objectToJson = (object_: objectType) => {
   `Assoc([
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
-    ("fields", `List(object_.fields |> List.map(field => `String(field)))),
+    ("fields", `List(object_.fields |> List.map(fieldToJson))),
     locToJson(object_.loc),
   ]);
 };
@@ -62,7 +91,7 @@ let enumToJson = enum =>
   `Assoc([
     ("kind", `String("EnumTypeDefinition")),
     ("name", nameToJson(enum.name)),
-    locToJson(enum.loc)
+    locToJson(enum.loc),
   ]);
 
 let typeDefinitionToJson = typeDefinition =>
@@ -83,5 +112,5 @@ let toJson = document =>
       "definitions",
       `List(document.definitions |> List.map(definitionToJson)),
     ),
-    locToJson(document.loc)
+    locToJson(document.loc),
   ]);

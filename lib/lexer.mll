@@ -25,6 +25,7 @@ rule read_token =
   | newline { next_line lexbuf; read_token lexbuf }
   | "{" { LBRACE }
   | "}" { RBRACE }
+  | ":" { COLON }
   | "type" { TYPE }
   | "enum" { ENUM }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
