@@ -1,17 +1,10 @@
 (library
  (name graphql_sdl_parser)
  (public_name graphql-sdl-parser)
- (modules parser lexer ast)
- (libraries graphql graphql_parser yojson menhirLib))
+ (libraries graphql yojson menhirLib))
 
-(ocamllex lexer)
+(ocamllex graphql_schema_lexer)
 
 (menhir
- (modules parser)
+ (modules graphql_schema_parser)
  (flags --explain))
-
-(executable
- (name bin)
- (public_name bin)
- (modules bin)
- (libraries graphql-sdl-parser))

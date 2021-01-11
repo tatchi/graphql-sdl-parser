@@ -1,4 +1,3 @@
-open Graphql_sdl_parser;
 let print_error_position = lexbuf => {
   open Lexing;
   let pos = lexbuf.lex_curr_p;
@@ -10,12 +9,12 @@ let print_error_position = lexbuf => {
 };
 
 let parse_program = lexbuf =>
-  try(Parser.document(Lexer.read_token, lexbuf)) {
-  | Lexer.SyntaxError(msg) =>
+  try(Graphql_schema_parser.document(Graphql_schema_lexer.read_token, lexbuf)) {
+  | Graphql_schema_lexer.SyntaxError(msg) =>
     let error_msg = Fmt.str("%s: %s@.", print_error_position(lexbuf), msg);
     print_endline(error_msg);
     exit(-1);
-  | Parser.Error =>
+  | Graphql_schema_parser.Error =>
     let error_msg =
       Fmt.str(
         "%s: syntax error. Token: %s",
@@ -25,12 +24,11 @@ let parse_program = lexbuf =>
     print_endline(error_msg);
     exit(-1);
   };
-let lexbuf = Lexing.from_string({|type User {
-  username: [String!]!
-}|});
 
-let ast = parse_program(lexbuf);
+let parse = s => {
+  Lexing.from_string(s) |> parse_program;
+};
 
-let json = Ast.toJson(ast);
-
-print_endline(Yojson.Safe.pretty_to_string(json));
+let pp = s => {
+  parse(s) |> Ast.toJson |> Yojson.Safe.pretty_to_string;
+};

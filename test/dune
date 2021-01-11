@@ -1,0 +1,6 @@
+(library
+ (name test)
+ (libraries graphql-sdl-parser)
+ (inline_tests)
+ (preprocess
+  (pps ppx_expect)))

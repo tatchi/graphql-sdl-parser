@@ -4,7 +4,6 @@
   "description": "GraphQL SDL Parser",
   "license": "MIT",
   "esy": {
-    "buildsInSource": "_build",
     "build": "dune build -p #{self.name}",
     "buildDev": "refmterr dune build --promote-install-files --root . --only-package #{self.name}",
     "NOTE": "Optional release Section. Customizes result of `esy release`",
@@ -14,7 +13,7 @@
     }
   },
   "scripts": {
-    "test": "esy x Bin",
+    "test": "esy x dune test",
     "format": "esy dune build @fmt --auto-promote",
     "doc": "esy dune build @doc"
   },

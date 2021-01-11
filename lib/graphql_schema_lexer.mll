@@ -1,6 +1,6 @@
 {
 open Lexing
-open Parser
+open Graphql_schema_parser
 exception SyntaxError of string
 let next_line lexbuf =
   let pos = lexbuf.lex_curr_p in
