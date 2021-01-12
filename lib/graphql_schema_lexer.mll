@@ -31,6 +31,8 @@ rule read_token =
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
   | "enum" { ENUM }
+  | "implements" { IMPLEMENTS }
+  | "&" { AMPERSAND }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }

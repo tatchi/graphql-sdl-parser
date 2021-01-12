@@ -1,16 +1,17 @@
 type loc = (Lexing.position, Lexing.position);
 
-type nameType =
-  | Name({
-      value: string,
-      loc,
-    });
+type name = {
+  value: string,
+  loc,
+};
+
+type namedType = {
+  name,
+  loc,
+};
 
 type fieldType =
-  | NamedType({
-      name: nameType,
-      loc,
-    })
+  | NamedType(namedType)
   | ListType({
       type_: fieldType,
       loc,
@@ -21,19 +22,22 @@ type fieldType =
     });
 
 type field = {
-  name: nameType,
+  name,
   type_: fieldType,
   loc,
 };
 
 type objectType = {
-  name: nameType,
+  name,
   fields: list(field),
+  interfaces: list(namedType),
   loc,
 };
 type enumType = {
-  name: nameType,
+  name,
   loc,
+  directives: list(string),
+  values: list(string),
 };
 
 type typeDefinition =
@@ -62,24 +66,23 @@ let locToJson = ((startPos, endPos): loc) => (
   ]),
 );
 
-let nameToJson = nameType =>
-  switch (nameType) {
-  | Name(name) =>
-    `Assoc([
-      ("kind", `String("Name")),
-      ("value", `String(name.value)),
-      locToJson(name.loc),
-    ])
-  };
+let nameToJson = name =>
+  `Assoc([
+    ("kind", `String("Name")),
+    ("value", `String(name.value)),
+    locToJson(name.loc),
+  ]);
+
+let namedTypeToJson = (namedType: namedType) =>
+  `Assoc([
+    ("kind", `String("NamedType")),
+    ("name", nameToJson(namedType.name)),
+    locToJson(namedType.loc),
+  ]);
 
 let rec fieldTypeToJson = fieldType =>
   switch (fieldType) {
-  | NamedType(namedType) =>
-    `Assoc([
-      ("kind", `String("NamedType")),
-      ("name", nameToJson(namedType.name)),
-      locToJson(namedType.loc),
-    ])
+  | NamedType(namedType) => namedTypeToJson(namedType)
   | ListType(listType) =>
     `Assoc([
       ("kind", `String("ListType")),
@@ -106,6 +109,7 @@ let objectToJson = (object_: objectType) => {
   `Assoc([
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
+    ("interfaces", `List(object_.interfaces |> List.map(namedTypeToJson))),
     ("fields", `List(object_.fields |> List.map(fieldToJson))),
     locToJson(object_.loc),
   ]);

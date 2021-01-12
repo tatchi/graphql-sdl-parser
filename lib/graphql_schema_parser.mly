@@ -11,6 +11,8 @@
 %token EXCLAMATION_MARK
 %token TYPE
 %token ENUM
+%token IMPLEMENTS
+%token AMPERSAND
 %token <string> IDENTIFIER
 %token EOF
 
@@ -36,7 +38,11 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | TYPE name=Name fields=loption(Fields) { {name; fields; loc=$loc } }
+  | TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; loc=$loc } }
+  ;
+
+Implementations:
+  | IMPLEMENTS separated_nonempty_list(AMPERSAND, NamedType) { $2 }
   ;
 
 Fields:
@@ -46,23 +52,19 @@ Field:
   | Name COLON FieldType { {name=$1;type_=$3;loc=$loc} }
 
 FieldType:
-  | NamedType { $1 }
-  | ListType { $1 }
-  | NonNullType { $1 }
-
-ListType:
+  | NamedType { NamedType($1) }
   | LBRACKET FieldType RBRACKET { ListType({type_=$2; loc=$loc}) }
-
-NonNullType:
-  | FieldType EXCLAMATION_MARK { NonNullType({type_=$1; loc=$loc}) }
+  | FieldType EXCLAMATION_MARK  { NonNullType({type_=$1; loc=$loc} ) }
+  ;
 
 NamedType:
-  | Name { NamedType({name=$1; loc=$loc}) }
-
+  | Name { {name=$1; loc=$loc} }
+  ;
+  
 EnumTypeDefinition:
-  | ENUM name=Name { {name; loc=$loc } }
+  | ENUM name=Name { {name; loc=$loc; directives=[]; values=[] } }
   ;
 
 Name:
-  | IDENTIFIER { Name({value=$1; loc=$loc}) }
+  | IDENTIFIER { {value=$1; loc=$loc} }
   ;
