@@ -27,8 +27,15 @@ type field = {
   loc,
 };
 
+type description = {
+  value: string,
+  // block: bool,
+  loc,
+};
+
 type objectType = {
   name,
+  description: option(description),
   fields: list(field),
   interfaces: list(namedType),
   loc,
@@ -66,7 +73,7 @@ let locToJson = ((startPos, endPos): loc) => (
   ]),
 );
 
-let nameToJson = name =>
+let nameToJson = (name: name) =>
   `Assoc([
     ("kind", `String("Name")),
     ("value", `String(name.value)),
@@ -105,14 +112,29 @@ let fieldToJson = (field: field) =>
     locToJson(field.loc),
   ]);
 
-let objectToJson = (object_: objectType) => {
+let definitionToJson = definition => {
   `Assoc([
+    ("kind", `String("StringValue")),
+    ("value", `String(definition.value)),
+    // ("block", `Bool(definition.block)),
+    locToJson(definition.loc),
+  ]);
+};
+
+let objectToJson = (object_: objectType) => {
+  let fields = [
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
+    // ("definition", `String(object_.definition)),
     ("interfaces", `List(object_.interfaces |> List.map(namedTypeToJson))),
     ("fields", `List(object_.fields |> List.map(fieldToJson))),
     locToJson(object_.loc),
-  ]);
+  ];
+  switch (object_.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", definitionToJson(description)), ...fields])
+  };
 };
 
 let enumToJson = enum =>

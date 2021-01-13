@@ -13,6 +13,7 @@
 %token ENUM
 %token IMPLEMENTS
 %token AMPERSAND
+%token <string> STRING
 %token <string> IDENTIFIER
 %token EOF
 
@@ -38,8 +39,11 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; loc=$loc } }
+  | description=option(Description) TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; description; loc=$loc } }
   ;
+
+Description:
+  | STRING { {value=$1; loc=$loc} }
 
 Implementations:
   | IMPLEMENTS separated_nonempty_list(AMPERSAND, NamedType) { $2 }

@@ -2,7 +2,8 @@ let%expect_test _ = {
   print_endline(
     Graphql_sdl_parser.pp(
       {|
-    type User implements Ville & lol {
+     "Hello" 
+    type User implements Character & Admin {
       username: String!
       age: [Int!]!
     }
