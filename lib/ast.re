@@ -29,7 +29,7 @@ type field = {
 
 type description = {
   value: string,
-  // block: bool,
+  block: bool,
   loc,
 };
 
@@ -112,12 +112,12 @@ let fieldToJson = (field: field) =>
     locToJson(field.loc),
   ]);
 
-let definitionToJson = definition => {
+let descriptionToJson = description => {
   `Assoc([
     ("kind", `String("StringValue")),
-    ("value", `String(definition.value)),
-    // ("block", `Bool(definition.block)),
-    locToJson(definition.loc),
+    ("value", `String(description.value)),
+    ("block", `Bool(description.block)),
+    locToJson(description.loc),
   ]);
 };
 
@@ -125,7 +125,6 @@ let objectToJson = (object_: objectType) => {
   let fields = [
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
-    // ("definition", `String(object_.definition)),
     ("interfaces", `List(object_.interfaces |> List.map(namedTypeToJson))),
     ("fields", `List(object_.fields |> List.map(fieldToJson))),
     locToJson(object_.loc),
@@ -133,7 +132,7 @@ let objectToJson = (object_: objectType) => {
   switch (object_.description) {
   | None => `Assoc(fields)
   | Some(description) =>
-    `Assoc([("description", definitionToJson(description)), ...fields])
+    `Assoc([("description", descriptionToJson(description)), ...fields])
   };
 };
 

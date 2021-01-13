@@ -23,7 +23,10 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | newline { next_line lexbuf; read_token lexbuf }
-  | '"'      { read_string (Buffer.create 17) lexbuf }
+  | '"' | "\"\"\"" {
+    let terminator = Lexing.lexeme lexbuf in
+    read_string (Buffer.create 17) terminator lexbuf
+  }
   | "{" { LBRACE }
   | "}" { RBRACE }
   | "[" { LBRACKET }
@@ -38,18 +41,33 @@ rule read_token =
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }
 
-  and read_string buf =
+  and read_string buf terminator  =
   parse
-  | '"'       { STRING (Buffer.contents buf) }
-  | '\\' '/'  { Buffer.add_char buf '/'; read_string buf lexbuf }
-  | '\\' '\\' { Buffer.add_char buf '\\'; read_string buf lexbuf }
-  | '\\' 'b'  { Buffer.add_char buf '\b'; read_string buf lexbuf }
-  | '\\' 'f'  { Buffer.add_char buf '\012'; read_string buf lexbuf }
-  | '\\' 'n'  { Buffer.add_char buf '\n'; read_string buf lexbuf }
-  | '\\' 'r'  { Buffer.add_char buf '\r'; read_string buf lexbuf }
-  | '\\' 't'  { Buffer.add_char buf '\t'; read_string buf lexbuf }
-  | newline { raise (SyntaxError ("String is not terminated")) }
+  | "\"\"\"" | '"' {
+    let lexeme = Lexing.lexeme lexbuf in
+
+    if lexeme = terminator then
+      if terminator = "\"" then
+        SINGLE_LINE_STRING (Buffer.contents buf)
+      else
+        MULTI_LINE_STRING (Buffer.contents buf)
+    else
+      let _ = Buffer.add_string buf lexeme in
+      read_string buf terminator lexbuf
+  }
+  | '\\' '/'  { Buffer.add_char buf '/'; read_string buf terminator lexbuf }
+  | '\\' '\\' { Buffer.add_char buf '\\'; read_string buf terminator lexbuf }
+  | '\\' 'b'  { Buffer.add_char buf '\b'; read_string buf terminator lexbuf }
+  | '\\' 'f'  { Buffer.add_char buf '\012'; read_string buf terminator lexbuf }
+  | '\\' 'n'  { Buffer.add_char buf '\n'; read_string buf terminator lexbuf }
+  | '\\' 'r'  { Buffer.add_char buf '\r'; read_string buf terminator lexbuf }
+  | '\\' 't'  { Buffer.add_char buf '\t'; read_string buf terminator lexbuf }
+  | newline { if terminator = "\"" then 
+                raise (SyntaxError ("String is not terminated")) 
+              else 
+                Buffer.add_string buf (Lexing.lexeme lexbuf);
+                read_string buf terminator lexbuf}
   | eof { raise (SyntaxError ("Lexer - Unexpected EOF - please terminate your comment.")) }
   | _  { Buffer.add_string buf (Lexing.lexeme lexbuf);
-      read_string buf lexbuf
+      read_string buf terminator lexbuf
     }

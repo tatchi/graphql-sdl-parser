@@ -13,7 +13,8 @@
 %token ENUM
 %token IMPLEMENTS
 %token AMPERSAND
-%token <string> STRING
+%token <string> SINGLE_LINE_STRING
+%token <string> MULTI_LINE_STRING
 %token <string> IDENTIFIER
 %token EOF
 
@@ -43,7 +44,8 @@ ObjectTypeDefinition:
   ;
 
 Description:
-  | STRING { {value=$1; loc=$loc} }
+  | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }
+  | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
 
 Implementations:
   | IMPLEMENTS separated_nonempty_list(AMPERSAND, NamedType) { $2 }
