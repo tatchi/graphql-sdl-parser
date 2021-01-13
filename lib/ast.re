@@ -21,15 +21,16 @@ type fieldType =
       loc,
     });
 
-type field = {
-  name,
-  type_: fieldType,
-  loc,
-};
-
 type description = {
   value: string,
   block: bool,
+  loc,
+};
+
+type field = {
+  name,
+  type_: fieldType,
+  description: option(description),
   loc,
 };
 
@@ -73,6 +74,15 @@ let locToJson = ((startPos, endPos): loc) => (
   ]),
 );
 
+let descriptionToJson = description => {
+  `Assoc([
+    ("kind", `String("StringValue")),
+    ("value", `String(description.value)),
+    ("block", `Bool(description.block)),
+    locToJson(description.loc),
+  ]);
+};
+
 let nameToJson = (name: name) =>
   `Assoc([
     ("kind", `String("Name")),
@@ -104,21 +114,18 @@ let rec fieldTypeToJson = fieldType =>
     ])
   };
 
-let fieldToJson = (field: field) =>
-  `Assoc([
+let fieldToJson = (field: field) => {
+  let fields = [
     ("kind", `String("FieldDefinition")),
     ("name", nameToJson(field.name)),
     ("type", fieldTypeToJson(field.type_)),
     locToJson(field.loc),
-  ]);
-
-let descriptionToJson = description => {
-  `Assoc([
-    ("kind", `String("StringValue")),
-    ("value", `String(description.value)),
-    ("block", `Bool(description.block)),
-    locToJson(description.loc),
-  ]);
+  ];
+  switch (field.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", descriptionToJson(description)), ...fields])
+  };
 };
 
 let objectToJson = (object_: objectType) => {

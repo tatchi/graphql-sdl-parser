@@ -43,10 +43,6 @@ ObjectTypeDefinition:
   | description=option(Description) TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; description; loc=$loc } }
   ;
 
-Description:
-  | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }
-  | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
-
 Implementations:
   | IMPLEMENTS separated_nonempty_list(AMPERSAND, NamedType) { $2 }
   ;
@@ -55,7 +51,11 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | Name COLON FieldType { {name=$1;type_=$3;loc=$loc} }
+  | description=option(Description) Name COLON FieldType { {name=$2;description;type_=$4;loc=$loc} }
+
+Description:
+  | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }
+  | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
 
 FieldType:
   | NamedType { NamedType($1) }
