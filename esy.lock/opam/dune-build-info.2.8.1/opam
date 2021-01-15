@@ -19,8 +19,6 @@ depends: [
   "odoc" {with-doc}
 ]
 dev-repo: "git+https://github.com/ocaml/dune.git"
-patches: ["add-missing-version.patch"]
-extra-files: ["add-missing-version.patch" "md5=afde317f7bfc202aa04f380f66e67e52"]
 build: [
   ["dune" "subst"] {dev}
   [
@@ -34,11 +32,11 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-x-commit-hash: "06f18009cb3c32d32712ecc992c4e45932882022"
+x-commit-hash: "b796156167490e777131403f651e83779e954000"
 url {
-  src: "https://github.com/ocaml/dune/releases/download/2.8.0/dune-2.8.0.tbz"
+  src: "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz"
   checksum: [
-    "sha256=07104d9a51c85f7100cc95e633e1f07e6436b0f0e68ab38e87328e74a9f0d48b"
-    "sha512=615958292b9437e16e363c36b02efdc85b78e6e29b301cea23d8ab3ac206dc6546fcd392017967ba54258326ceb997baec9a8053e4d343429a9e48ceeb89f5e8"
+    "sha256=e7b405c75af321ce6518aa8e70ebdd403dbcc2ede931713e69c2b5addda4bd44"
+    "sha512=300c9f5074af5db78c8ffb17b4a1c402fce322d9af4b213aa847bfd9f9fd053e757182f3da8b207f2d24afbd609a227e8c0e57ef038ab236322229c41e240c43"
   ]
 }
