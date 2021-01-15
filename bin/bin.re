@@ -1,5 +1,8 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|type User {"comment"username: String}|},
+    {|"""muli 
+line 
+com\nment""" type User {"username comment"username: String}|},
   ),
 );
+

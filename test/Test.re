@@ -24,7 +24,7 @@ let%expect_test _ = {
             "kind": "StringValue",
             "value": " single line descript\nion ",
             "block": false,
-            "loc": { "start": 33, "end": 34 }
+            "loc": { "start": 5, "end": 34 }
           },
           "kind": "ObjectTypeDefinition",
           "name": {
@@ -73,7 +73,7 @@ let%expect_test _ = {
                 },
                 "loc": { "start": 96, "end": 103 }
               },
-              "loc": { "start": 86, "end": 103 }
+              "loc": { "start": 79, "end": 103 }
             },
             {
               "kind": "FieldDefinition",
@@ -103,17 +103,17 @@ let%expect_test _ = {
                 },
                 "loc": { "start": 115, "end": 122 }
               },
-              "loc": { "start": 110, "end": 122 }
+              "loc": { "start": 103, "end": 122 }
             }
           ],
-          "loc": { "start": 33, "end": 128 }
+          "loc": { "start": 5, "end": 128 }
         },
         {
           "description": {
             "kind": "StringValue",
             "value": "multi \n    line\n    description",
             "block": true,
-            "loc": { "start": 167, "end": 170 }
+            "loc": { "start": 133, "end": 170 }
           },
           "kind": "ObjectTypeDefinition",
           "name": {
@@ -123,10 +123,10 @@ let%expect_test _ = {
           },
           "interfaces": [],
           "fields": [],
-          "loc": { "start": 167, "end": 186 }
+          "loc": { "start": 133, "end": 186 }
         }
       ],
-      "loc": { "start": 33, "end": 189 }
+      "loc": { "start": 5, "end": 189 }
     }
   |}
 };
