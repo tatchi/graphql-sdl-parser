@@ -1,0 +1,196 @@
+document: ENUM IDENTIFIER RBRACKET
+##
+## Ends in an error in state: 40.
+##
+## list(Definition) -> Definition . list(Definition) [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## Definition
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 1
+
+document: ENUM TYPE
+##
+## Ends in an error in state: 3.
+##
+## EnumTypeDefinition -> ENUM . Name [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## ENUM
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 2
+
+document: RBRACKET
+##
+## Ends in an error in state: 0.
+##
+## document' -> . document [ # ]
+##
+## The known suffix of the stack is as follows:
+##
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 3
+
+document: SINGLE_LINE_STRING SINGLE_LINE_STRING
+##
+## Ends in an error in state: 6.
+##
+## ObjectTypeDefinition -> option(Description) . TYPE Name loption(Implementations) loption(Fields) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## option(Description)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 4
+
+document: TYPE IDENTIFIER IMPLEMENTS IDENTIFIER AMPERSAND TYPE
+##
+## Ends in an error in state: 12.
+##
+## separated_nonempty_list(AMPERSAND,NamedType) -> NamedType AMPERSAND . separated_nonempty_list(AMPERSAND,NamedType) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING LBRACE EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## NamedType AMPERSAND
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 5
+
+document: TYPE IDENTIFIER IMPLEMENTS IDENTIFIER RBRACKET
+##
+## Ends in an error in state: 11.
+##
+## separated_nonempty_list(AMPERSAND,NamedType) -> NamedType . [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING LBRACE EOF ENUM ]
+## separated_nonempty_list(AMPERSAND,NamedType) -> NamedType . AMPERSAND separated_nonempty_list(AMPERSAND,NamedType) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING LBRACE EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## NamedType
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 6
+
+document: TYPE IDENTIFIER IMPLEMENTS TYPE
+##
+## Ends in an error in state: 9.
+##
+## Implementations -> IMPLEMENTS . separated_nonempty_list(AMPERSAND,NamedType) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING LBRACE EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## IMPLEMENTS
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 7
+
+document: TYPE IDENTIFIER LBRACE IDENTIFIER COLON IDENTIFIER TYPE
+##
+## Ends in an error in state: 25.
+##
+## Field -> option(Description) Name COLON FieldType . [ SINGLE_LINE_STRING RBRACE MULTI_LINE_STRING IDENTIFIER ]
+## FieldType -> FieldType . EXCLAMATION_MARK [ SINGLE_LINE_STRING RBRACE MULTI_LINE_STRING IDENTIFIER EXCLAMATION_MARK ]
+##
+## The known suffix of the stack is as follows:
+## option(Description) Name COLON FieldType
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 8
+I have read '$0' and before '$2'
+
+document: TYPE IDENTIFIER LBRACE IDENTIFIER COLON LBRACKET IDENTIFIER TYPE
+##
+## Ends in an error in state: 22.
+##
+## FieldType -> LBRACKET FieldType . RBRACKET [ SINGLE_LINE_STRING RBRACKET RBRACE MULTI_LINE_STRING IDENTIFIER EXCLAMATION_MARK ]
+## FieldType -> FieldType . EXCLAMATION_MARK [ RBRACKET EXCLAMATION_MARK ]
+##
+## The known suffix of the stack is as follows:
+## LBRACKET FieldType
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 9
+
+document: TYPE IDENTIFIER LBRACE IDENTIFIER COLON LBRACKET TYPE
+##
+## Ends in an error in state: 20.
+##
+## FieldType -> LBRACKET . FieldType RBRACKET [ SINGLE_LINE_STRING RBRACKET RBRACE MULTI_LINE_STRING IDENTIFIER EXCLAMATION_MARK ]
+##
+## The known suffix of the stack is as follows:
+## LBRACKET
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 10
+
+document: TYPE IDENTIFIER LBRACE IDENTIFIER COLON TYPE
+##
+## Ends in an error in state: 19.
+##
+## Field -> option(Description) Name COLON . FieldType [ SINGLE_LINE_STRING RBRACE MULTI_LINE_STRING IDENTIFIER ]
+##
+## The known suffix of the stack is as follows:
+## option(Description) Name COLON
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 11 
+
+document: TYPE IDENTIFIER LBRACE IDENTIFIER TYPE
+##
+## Ends in an error in state: 18.
+##
+## Field -> option(Description) Name . COLON FieldType [ SINGLE_LINE_STRING RBRACE MULTI_LINE_STRING IDENTIFIER ]
+##
+## The known suffix of the stack is as follows:
+## option(Description) Name
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 12
+
+document: TYPE IDENTIFIER LBRACE SINGLE_LINE_STRING EXCLAMATION_MARK
+##
+## Ends in an error in state: 17.
+##
+## Field -> option(Description) . Name COLON FieldType [ SINGLE_LINE_STRING RBRACE MULTI_LINE_STRING IDENTIFIER ]
+##
+## The known suffix of the stack is as follows:
+## option(Description)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 13
+
+document: TYPE IDENTIFIER LBRACE TYPE
+##
+## Ends in an error in state: 16.
+##
+## Fields -> LBRACE . nonempty_list(Field) RBRACE [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## LBRACE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 14
+
+document: TYPE IDENTIFIER RBRACKET
+##
+## Ends in an error in state: 8.
+##
+## ObjectTypeDefinition -> option(Description) TYPE Name . loption(Implementations) loption(Fields) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## option(Description) TYPE Name
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 15
+
+document: TYPE TYPE
+##
+## Ends in an error in state: 7.
+##
+## ObjectTypeDefinition -> option(Description) TYPE . Name loption(Implementations) loption(Fields) [ TYPE SINGLE_LINE_STRING MULTI_LINE_STRING EOF ENUM ]
+##
+## The known suffix of the stack is as follows:
+## option(Description) TYPE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE> 16
+

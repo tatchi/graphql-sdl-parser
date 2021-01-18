@@ -7,4 +7,12 @@
 
 (menhir
  (modules graphql_schema_parser)
- (flags --explain))
+ (flags --explain --table))
+
+(rule
+ (targets graphql_sdl_parser_messages.ml)
+ (deps parserMessages.messages graphql_schema_parser.mly)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run menhir --compile-errors %{deps}))))
