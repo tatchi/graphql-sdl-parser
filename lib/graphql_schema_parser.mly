@@ -27,7 +27,7 @@
 %% /* Start grammar productions */
 
 document: 
-  | definitions=list(Definition) EOF { {definitions; loc=$loc} }
+  | definitions=nonempty_list(Definition) EOF { {definitions; loc=$loc} }
   ;
 
 Definition:
