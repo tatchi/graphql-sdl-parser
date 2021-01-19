@@ -48,7 +48,7 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | description=option(Description) TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; description; loc=$loc } }
+  | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; description; loc=$loc } }
   ;
 
 Implementations:
@@ -59,13 +59,13 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | description=option(Description) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
+  | description=option(StringValue) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
 
 FieldArguments:
   | LPAREN separated_nonempty_list(COMMA*, Argument) RPAREN { $2 }
 
 Argument:
-  | description=option(Description) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;loc=$loc} }
+  | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;loc=$loc} }
 
 
 DefaultArgumentValue:
@@ -76,11 +76,11 @@ Value:
   | value=INT { IntValue({value;loc=$loc}) }
   | value=FLOAT { FloatValue({value;loc=$loc}) }
   | value=BOOL { BooleanValue({value;loc=$loc}) }
-  | value=Description { StringValue(value) }
+  | value=StringValue { StringValue(value) }
   | LBRACKET values=separated_list(COMMA+, Value) RBRACKET { ListValue({values;loc=$loc}) }
   | value=IDENTIFIER { EnumValue({value;loc=$loc}) }
 
-Description:
+StringValue:
   | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }
   | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
 
