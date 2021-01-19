@@ -29,10 +29,20 @@ type description = {
   loc,
 };
 
+type inputValueDefinition = {
+  name,
+  type_: fieldType,
+  description: option(description),
+  loc,
+  // defaultValue
+  // directives
+};
+
 type fieldDefinition = {
   name,
   type_: fieldType,
   description: option(description),
+  arguments: list(inputValueDefinition),
   loc,
 };
 
@@ -122,11 +132,29 @@ and fieldTypeToJson = fieldType =>
     ])
   };
 
+let inputValueDefinitionToJson = (inputValueDefinition: inputValueDefinition) => {
+  let fields = [
+    ("kind", `String("InputValueDefinition")),
+    ("name", nameToJson(inputValueDefinition.name)),
+    ("type", fieldTypeToJson(inputValueDefinition.type_)),
+    locToJson(inputValueDefinition.loc),
+  ];
+  switch (inputValueDefinition.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", descriptionToJson(description)), ...fields])
+  };
+};
+
 let fieldDefinitionToJson = (field: fieldDefinition) => {
   let fields = [
     ("kind", `String("FieldDefinition")),
     ("name", nameToJson(field.name)),
     ("type", fieldTypeToJson(field.type_)),
+    (
+      "arguments",
+      `List(field.arguments |> List.map(inputValueDefinitionToJson)),
+    ),
     locToJson(field.loc),
   ];
   switch (field.description) {

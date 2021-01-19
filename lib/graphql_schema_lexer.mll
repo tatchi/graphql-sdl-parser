@@ -34,7 +34,10 @@ rule read_token =
   | "}" { RBRACE }
   | "[" { LBRACKET }
   | "]" { RBRACKET }
+  | '(' { LPAREN }
+  | ')' { RPAREN }
   | ":" { COLON }
+  | "," { COMMA }
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
   | "enum" { ENUM }

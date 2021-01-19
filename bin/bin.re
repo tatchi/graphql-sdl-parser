@@ -1,8 +1,8 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|"""muli
-line
-com\nment""" type User {"username comment"username: [[String!]!]!!}|},
+    {|type User {
+  name("argument definition"id: [String!] id2: Int): String!
+}|},
   ),
 );
 

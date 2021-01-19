@@ -7,7 +7,10 @@
 %token RBRACE
 %token LBRACKET
 %token RBRACKET
+%token LPAREN
+%token RPAREN
 %token COLON
+%token COMMA
 %token EXCLAMATION_MARK
 %token TYPE
 %token ENUM
@@ -51,7 +54,13 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | description=option(Description) Name COLON FieldType { {name=$2;description;type_=$4;loc=$loc} }
+  | description=option(Description) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
+
+FieldArguments:
+  | LPAREN separated_nonempty_list(COMMA*, Argument) RPAREN { $2 }
+
+Argument:
+  | description=option(Description) name=Name COLON type_=FieldType { {name;description;type_;loc=$loc} }
 
 Description:
   | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }
