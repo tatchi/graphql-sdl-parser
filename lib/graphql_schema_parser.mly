@@ -58,18 +58,18 @@ Description:
   | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
 
 FieldType:
-  | Nullable { $1}
-  | NonNullable { $1 }
+  | NullableFieldType { $1}
+  | NonNullableFieldType { $1 }
 
-Nullable:
-  | ListOrNamed { Nullable($1) }
+NullableFieldType:
+  | NamedOrListFieldType { NullableFieldType($1) }
 
-ListOrNamed:
-  | NamedType { Named($1) }
-  | LBRACKET FieldType RBRACKET { List({type_=$2; loc=$loc}) }
+NamedOrListFieldType:
+  | NamedType { NamedFieldType($1) }
+  | LBRACKET FieldType RBRACKET { ListFieldType({type_=$2; loc=$loc}) }
 
-NonNullable:  
-  | ListOrNamed EXCLAMATION_MARK  { NonNullable({type_=$1; loc=$loc}) }
+NonNullableFieldType:  
+  | NamedOrListFieldType EXCLAMATION_MARK  { NonNullableFieldType({type_=$1; loc=$loc}) }
   ;
 
 NamedType:

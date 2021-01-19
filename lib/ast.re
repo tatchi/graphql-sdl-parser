@@ -10,16 +10,16 @@ type namedType = {
   loc,
 };
 
-type listOrNamed =
-  | Named(namedType)
-  | List({
+type namedOrListFieldType =
+  | NamedFieldType(namedType)
+  | ListFieldType({
       type_: fieldType,
       loc,
     })
 and fieldType =
-  | Nullable(listOrNamed)
-  | NonNullable({
-      type_: listOrNamed,
+  | NullableFieldType(namedOrListFieldType)
+  | NonNullableFieldType({
+      type_: namedOrListFieldType,
       loc,
     });
 
@@ -29,7 +29,7 @@ type description = {
   loc,
 };
 
-type field = {
+type fieldDefinition = {
   name,
   type_: fieldType,
   description: option(description),
@@ -39,7 +39,7 @@ type field = {
 type objectType = {
   name,
   description: option(description),
-  fields: list(field),
+  fields: list(fieldDefinition),
   interfaces: list(namedType),
   loc,
 };
@@ -99,29 +99,30 @@ let namedTypeToJson = (namedType: namedType) =>
     locToJson(namedType.loc),
   ]);
 
-let rec listOrNamedToJson = listOrNamed => {
-  switch (listOrNamed) {
-  | Named(namedType) => namedTypeToJson(namedType)
-  | List(listType) =>
+let rec listOrNamedFieldToJson = listOrNamedField => {
+  switch (listOrNamedField) {
+  | NamedFieldType(namedFieldType) => namedTypeToJson(namedFieldType)
+  | ListFieldType(listFieldType) =>
     `Assoc([
       ("kind", `String("ListType")),
-      ("type", fieldTypeToJson(listType.type_)),
-      locToJson(listType.loc),
+      ("type", fieldTypeToJson(listFieldType.type_)),
+      locToJson(listFieldType.loc),
     ])
   };
 }
 and fieldTypeToJson = fieldType =>
   switch (fieldType) {
-  | Nullable(nullable) => listOrNamedToJson(nullable)
-  | NonNullable(nonNullType) =>
+  | NullableFieldType(nullableFieldType) =>
+    listOrNamedFieldToJson(nullableFieldType)
+  | NonNullableFieldType(nonNullableFIeldType) =>
     `Assoc([
       ("kind", `String("NonNullType")),
-      ("type", listOrNamedToJson(nonNullType.type_)),
-      locToJson(nonNullType.loc),
+      ("type", listOrNamedFieldToJson(nonNullableFIeldType.type_)),
+      locToJson(nonNullableFIeldType.loc),
     ])
   };
 
-let fieldToJson = (field: field) => {
+let fieldDefinitionToJson = (field: fieldDefinition) => {
   let fields = [
     ("kind", `String("FieldDefinition")),
     ("name", nameToJson(field.name)),
@@ -140,7 +141,7 @@ let objectToJson = (object_: objectType) => {
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
     ("interfaces", `List(object_.interfaces |> List.map(namedTypeToJson))),
-    ("fields", `List(object_.fields |> List.map(fieldToJson))),
+    ("fields", `List(object_.fields |> List.map(fieldDefinitionToJson))),
     locToJson(object_.loc),
   ];
   switch (object_.description) {
