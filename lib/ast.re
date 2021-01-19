@@ -45,7 +45,7 @@ and objectValue = {
   loc,
 }
 and value =
-  | SringValue(stringValue)
+  | StringValue(stringValue)
   | BooleanValue(booleanValue)
   | IntValue(intValue)
   | FloatValue(floatValue)
@@ -176,7 +176,7 @@ let rec listValueToJson = (listValue: listValue) => {
 }
 and valueToJson = (value: value) =>
   switch (value) {
-  | SringValue(stringValue) => stringValueToJson(stringValue)
+  | StringValue(stringValue) => stringValueToJson(stringValue)
   | BooleanValue(booleanValue) => booleanValueToJson(booleanValue)
   | IntValue(intValue) => intValueToJson(intValue)
   | FloatValue(floatValue) => floatValueToJson(floatValue)

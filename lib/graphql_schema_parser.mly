@@ -76,6 +76,8 @@ Value:
   | value=INT { IntValue({value;loc=$loc}) }
   | value=FLOAT { FloatValue({value;loc=$loc}) }
   | value=BOOL { BooleanValue({value;loc=$loc}) }
+  | value=Description { StringValue(value) }
+  | LBRACKET values=separated_list(COMMA+, Value) RBRACKET { ListValue({values;loc=$loc}) }
   | value=IDENTIFIER { EnumValue({value;loc=$loc}) }
 
 Description:

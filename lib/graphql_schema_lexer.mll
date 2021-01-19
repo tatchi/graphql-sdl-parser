@@ -29,7 +29,6 @@ rule read_token =
   | int { INT (int_of_string (Lexing.lexeme lexbuf))}
   | float { FLOAT (float_of_string (Lexing.lexeme lexbuf))}
   | bool { BOOL (bool_of_string (Lexing.lexeme lexbuf))}
-  (* | quoted  { QUOTED (Lexing.lexeme lexbuf) } *)
   | '"' | "\"\"\"" {
     let start_pos = Lexing.lexeme_start_p lexbuf in
     let terminator = Lexing.lexeme lexbuf in
