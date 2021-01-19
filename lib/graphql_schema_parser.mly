@@ -21,7 +21,8 @@
 %token <string> SINGLE_LINE_STRING
 %token <string> MULTI_LINE_STRING
 %token <string> IDENTIFIER
-%token <int> NUMBER
+%token <int> INT
+%token <float> FLOAT
 %token EOF
 
 
@@ -71,7 +72,8 @@ DefaultArgumentValue:
 
 Value:
   | NULL { NullValue({loc=$loc}) }
-  | value=NUMBER { IntValue({value;loc=$loc}) }
+  | value=INT { IntValue({value;loc=$loc}) }
+  | value=FLOAT { FloatValue({value;loc=$loc}) }
 
 Description:
   | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }

@@ -14,6 +14,7 @@ let next_line lexbuf =
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
 let int = '-'? digit+  (* regex for integers *)
+let float = '-'? digit+ '.' digit+
 let id = (alpha) (alpha|digit|'_')* (* regex for identifier *)
 let whitespace = [' ' '\t']+
 let newline = '\r' | '\n' | "\r\n"
@@ -24,7 +25,8 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | newline { next_line lexbuf; read_token lexbuf }
-  | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
+  | int { INT (int_of_string (Lexing.lexeme lexbuf))}
+  | float { FLOAT (float_of_string (Lexing.lexeme lexbuf))}
   (* | quoted  { QUOTED (Lexing.lexeme lexbuf) } *)
   | '"' | "\"\"\"" {
     let start_pos = Lexing.lexeme_start_p lexbuf in
