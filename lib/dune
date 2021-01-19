@@ -1,7 +1,14 @@
+; (env
+;  (dev
+;   (flags
+;    (:standard -warn-error -A))))
+
 (library
  (name graphql_sdl_parser)
  (public_name graphql-sdl-parser)
- (libraries graphql yojson menhirLib))
+ (libraries graphql yojson menhirLib)
+ (flags
+  (:standard -w -30)))
 
 (ocamllex graphql_schema_lexer)
 

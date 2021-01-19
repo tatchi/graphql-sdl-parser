@@ -12,6 +12,8 @@
 %token COLON
 %token COMMA
 %token EXCLAMATION_MARK
+%token EQUAL
+%token NULL
 %token TYPE
 %token ENUM
 %token IMPLEMENTS
@@ -19,6 +21,7 @@
 %token <string> SINGLE_LINE_STRING
 %token <string> MULTI_LINE_STRING
 %token <string> IDENTIFIER
+%token <int> NUMBER
 %token EOF
 
 
@@ -60,7 +63,15 @@ FieldArguments:
   | LPAREN separated_nonempty_list(COMMA*, Argument) RPAREN { $2 }
 
 Argument:
-  | description=option(Description) name=Name COLON type_=FieldType { {name;description;type_;loc=$loc} }
+  | description=option(Description) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;loc=$loc} }
+
+
+DefaultArgumentValue:
+  | EQUAL Value { $2 }
+
+Value:
+  | NULL { NullValue({loc=$loc}) }
+  | value=NUMBER { IntValue({value;loc=$loc}) }
 
 Description:
   | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }

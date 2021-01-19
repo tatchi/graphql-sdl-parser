@@ -24,6 +24,7 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | newline { next_line lexbuf; read_token lexbuf }
+  | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
   (* | quoted  { QUOTED (Lexing.lexeme lexbuf) } *)
   | '"' | "\"\"\"" {
     let start_pos = Lexing.lexeme_start_p lexbuf in
@@ -38,6 +39,8 @@ rule read_token =
   | ')' { RPAREN }
   | ":" { COLON }
   | "," { COMMA }
+  | "=" { EQUAL }
+  | "null" { NULL }
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
   | "enum" { ENUM }

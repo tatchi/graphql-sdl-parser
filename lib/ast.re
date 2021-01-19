@@ -9,7 +9,46 @@ type namedType = {
   name,
   loc,
 };
+type stringValue = {
+  value: string,
+  block: bool,
+  loc,
+};
+type booleanValue = {
+  value: bool,
+  loc,
+};
+type intValue = {
+  value: int,
+  loc,
+};
+type nullValue = {loc};
+type floatValue = {
+  value: float,
+  loc,
+};
+type listValue = {
+  values: list(value),
+  loc,
+}
+and objectField = {
+  name,
+  value,
+  loc,
+}
+and objectValue = {
+  fields: list(objectField),
+  loc,
+}
+and value =
+  | SringValue(stringValue)
+  | BooleanValue(booleanValue)
+  | IntValue(intValue)
+  | FloatValue(floatValue)
+  | NullValue(nullValue)
+  | ListValue(listValue);
 
+[@warning "-30"]
 type namedOrListFieldType =
   | NamedFieldType(namedType)
   | ListFieldType({
@@ -23,32 +62,26 @@ and fieldType =
       loc,
     });
 
-type description = {
-  value: string,
-  block: bool,
-  loc,
-};
-
 type inputValueDefinition = {
   name,
   type_: fieldType,
-  description: option(description),
+  description: option(stringValue),
   loc,
-  // defaultValue
+  defaultValue: option(value),
   // directives
 };
 
 type fieldDefinition = {
   name,
   type_: fieldType,
-  description: option(description),
+  description: option(stringValue),
   arguments: list(inputValueDefinition),
   loc,
 };
 
 type objectType = {
   name,
-  description: option(description),
+  description: option(stringValue),
   fields: list(fieldDefinition),
   interfaces: list(namedType),
   loc,
@@ -86,14 +119,58 @@ let locToJson = ((startPos, endPos): loc) => (
   ]),
 );
 
-let descriptionToJson = description => {
+let stringValueToJson = (stringValue: stringValue) => {
   `Assoc([
     ("kind", `String("StringValue")),
-    ("value", `String(description.value)),
-    ("block", `Bool(description.block)),
-    locToJson(description.loc),
+    ("value", `String(stringValue.value)),
+    ("block", `Bool(stringValue.block)),
+    locToJson(stringValue.loc),
   ]);
 };
+
+let booleanValueToJson = (booleanValue: booleanValue) => {
+  `Assoc([
+    ("kind", `String("BooleanValue")),
+    ("value", `Bool(booleanValue.value)),
+    locToJson(booleanValue.loc),
+  ]);
+};
+
+let intValueToJson = (intValue: intValue) => {
+  `Assoc([
+    ("kind", `String("IntValue")),
+    ("value", `Int(intValue.value)),
+    locToJson(intValue.loc),
+  ]);
+};
+
+let floatValueToJson = (floatValue: floatValue) => {
+  `Assoc([
+    ("kind", `String("FloatValue")),
+    ("value", `Float(floatValue.value)),
+    locToJson(floatValue.loc),
+  ]);
+};
+let nullValueToJson = (nullValue: nullValue) => {
+  `Assoc([("kind", `String("NullValue")), locToJson(nullValue.loc)]);
+};
+
+let rec listValueToJson = (listValue: listValue) => {
+  `Assoc([
+    ("kind", `String("ListValue")),
+    ("values", `List(listValue.values |> List.map(valueToJson))),
+    locToJson(listValue.loc),
+  ]);
+}
+and valueToJson = (value: value) =>
+  switch (value) {
+  | SringValue(stringValue) => stringValueToJson(stringValue)
+  | BooleanValue(booleanValue) => booleanValueToJson(booleanValue)
+  | IntValue(intValue) => intValueToJson(intValue)
+  | FloatValue(floatValue) => floatValueToJson(floatValue)
+  | NullValue(nullValue) => nullValueToJson(nullValue)
+  | ListValue(listValue) => listValueToJson(listValue)
+  };
 
 let nameToJson = (name: name) =>
   `Assoc([
@@ -139,10 +216,20 @@ let inputValueDefinitionToJson = (inputValueDefinition: inputValueDefinition) =>
     ("type", fieldTypeToJson(inputValueDefinition.type_)),
     locToJson(inputValueDefinition.loc),
   ];
+
+  let fields =
+    switch (inputValueDefinition.defaultValue) {
+    | None => fields
+    | Some(defaultValue) => [
+        ("defaultValue", valueToJson(defaultValue)),
+        ...fields,
+      ]
+    };
+
   switch (inputValueDefinition.description) {
   | None => `Assoc(fields)
   | Some(description) =>
-    `Assoc([("description", descriptionToJson(description)), ...fields])
+    `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
 
@@ -160,7 +247,7 @@ let fieldDefinitionToJson = (field: fieldDefinition) => {
   switch (field.description) {
   | None => `Assoc(fields)
   | Some(description) =>
-    `Assoc([("description", descriptionToJson(description)), ...fields])
+    `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
 
@@ -175,7 +262,7 @@ let objectToJson = (object_: objectType) => {
   switch (object_.description) {
   | None => `Assoc(fields)
   | Some(description) =>
-    `Assoc([("description", descriptionToJson(description)), ...fields])
+    `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
 
