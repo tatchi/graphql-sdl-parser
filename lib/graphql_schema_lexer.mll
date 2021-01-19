@@ -18,7 +18,7 @@ let id = (alpha) (alpha|digit|'_')* (* regex for identifier *)
 let whitespace = [' ' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 let string = "\"[^\"]*\""
-let quoted = '"'([^ '"' '\\' '\n']+)'"'
+let quoted = '"'([^'\n']*)'"'
 
 rule read_token =
   parse

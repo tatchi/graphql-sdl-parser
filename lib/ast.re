@@ -10,14 +10,16 @@ type namedType = {
   loc,
 };
 
-type fieldType =
-  | NamedType(namedType)
-  | ListType({
+type listOrNamed =
+  | Named(namedType)
+  | List({
       type_: fieldType,
       loc,
     })
-  | NonNullType({
-      type_: fieldType,
+and fieldType =
+  | Nullable(listOrNamed)
+  | NonNullable({
+      type_: listOrNamed,
       loc,
     });
 
@@ -97,19 +99,24 @@ let namedTypeToJson = (namedType: namedType) =>
     locToJson(namedType.loc),
   ]);
 
-let rec fieldTypeToJson = fieldType =>
-  switch (fieldType) {
-  | NamedType(namedType) => namedTypeToJson(namedType)
-  | ListType(listType) =>
+let rec listOrNamedToJson = listOrNamed => {
+  switch (listOrNamed) {
+  | Named(namedType) => namedTypeToJson(namedType)
+  | List(listType) =>
     `Assoc([
       ("kind", `String("ListType")),
       ("type", fieldTypeToJson(listType.type_)),
       locToJson(listType.loc),
     ])
-  | NonNullType(nonNullType) =>
+  };
+}
+and fieldTypeToJson = fieldType =>
+  switch (fieldType) {
+  | Nullable(nullable) => listOrNamedToJson(nullable)
+  | NonNullable(nonNullType) =>
     `Assoc([
       ("kind", `String("NonNullType")),
-      ("type", fieldTypeToJson(nonNullType.type_)),
+      ("type", listOrNamedToJson(nonNullType.type_)),
       locToJson(nonNullType.loc),
     ])
   };

@@ -58,9 +58,18 @@ Description:
   | MULTI_LINE_STRING { {value=$1; block=true; loc=$loc} }
 
 FieldType:
-  | NamedType { NamedType($1) }
-  | LBRACKET FieldType RBRACKET { ListType({type_=$2; loc=$loc}) }
-  | FieldType EXCLAMATION_MARK  { NonNullType({type_=$1; loc=$loc} ) }
+  | Nullable { $1}
+  | NonNullable { $1 }
+
+Nullable:
+  | ListOrNamed { Nullable($1) }
+
+ListOrNamed:
+  | NamedType { Named($1) }
+  | LBRACKET FieldType RBRACKET { List({type_=$2; loc=$loc}) }
+
+NonNullable:  
+  | ListOrNamed EXCLAMATION_MARK  { NonNullable({type_=$1; loc=$loc}) }
   ;
 
 NamedType:
