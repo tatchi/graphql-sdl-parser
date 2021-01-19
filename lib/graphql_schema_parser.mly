@@ -76,6 +76,7 @@ Value:
   | value=INT { IntValue({value;loc=$loc}) }
   | value=FLOAT { FloatValue({value;loc=$loc}) }
   | value=BOOL { BooleanValue({value;loc=$loc}) }
+  | value=IDENTIFIER { EnumValue({value;loc=$loc}) }
 
 Description:
   | SINGLE_LINE_STRING { {value=$1; block=false; loc=$loc} }

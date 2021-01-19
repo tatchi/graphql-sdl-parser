@@ -27,6 +27,10 @@ type floatValue = {
   value: float,
   loc,
 };
+type enumValue = {
+  value: string,
+  loc,
+};
 type listValue = {
   values: list(value),
   loc,
@@ -45,6 +49,7 @@ and value =
   | BooleanValue(booleanValue)
   | IntValue(intValue)
   | FloatValue(floatValue)
+  | EnumValue(enumValue)
   | NullValue(nullValue)
   | ListValue(listValue);
 
@@ -155,6 +160,13 @@ let nullValueToJson = (nullValue: nullValue) => {
   `Assoc([("kind", `String("NullValue")), locToJson(nullValue.loc)]);
 };
 
+let enumValueToJson = (enumValue: enumValue) =>
+  `Assoc([
+    ("kind", `String("EnumValue")),
+    ("value", `String(enumValue.value)),
+    locToJson(enumValue.loc),
+  ]);
+
 let rec listValueToJson = (listValue: listValue) => {
   `Assoc([
     ("kind", `String("ListValue")),
@@ -170,6 +182,7 @@ and valueToJson = (value: value) =>
   | FloatValue(floatValue) => floatValueToJson(floatValue)
   | NullValue(nullValue) => nullValueToJson(nullValue)
   | ListValue(listValue) => listValueToJson(listValue)
+  | EnumValue(enumValue) => enumValueToJson(enumValue)
   };
 
 let nameToJson = (name: name) =>
