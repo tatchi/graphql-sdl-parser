@@ -51,7 +51,8 @@ and value =
   | FloatValue(floatValue)
   | EnumValue(enumValue)
   | NullValue(nullValue)
-  | ListValue(listValue);
+  | ListValue(listValue)
+  | ObjectValue(objectValue);
 
 [@warning "-30"]
 type namedOrListFieldType =
@@ -124,6 +125,12 @@ let locToJson = ((startPos, endPos): loc) => (
   ]),
 );
 
+let nameToJson = (name: name) =>
+  `Assoc([
+    ("kind", `String("Name")),
+    ("value", `String(name.value)),
+    locToJson(name.loc),
+  ]);
 let stringValueToJson = (stringValue: stringValue) => {
   `Assoc([
     ("kind", `String("StringValue")),
@@ -167,7 +174,21 @@ let enumValueToJson = (enumValue: enumValue) =>
     locToJson(enumValue.loc),
   ]);
 
-let rec listValueToJson = (listValue: listValue) => {
+let rec objectValueToJson = (objectValue: objectValue) =>
+  `Assoc([
+    ("ObjectValue", `String("ObjectField")),
+    ("fields", `List(objectValue.fields |> List.map(objectFieldToJson))),
+    locToJson(objectValue.loc),
+  ])
+and objectFieldToJson = (objectField: objectField) =>
+  `Assoc([
+    ("kind", `String("ObjectField")),
+    ("name", nameToJson(objectField.name)),
+    ("value", valueToJson(objectField.value)),
+    locToJson(objectField.loc),
+  ])
+
+and listValueToJson = (listValue: listValue) => {
   `Assoc([
     ("kind", `String("ListValue")),
     ("values", `List(listValue.values |> List.map(valueToJson))),
@@ -183,14 +204,8 @@ and valueToJson = (value: value) =>
   | NullValue(nullValue) => nullValueToJson(nullValue)
   | ListValue(listValue) => listValueToJson(listValue)
   | EnumValue(enumValue) => enumValueToJson(enumValue)
+  | ObjectValue(objectValue) => objectValueToJson(objectValue)
   };
-
-let nameToJson = (name: name) =>
-  `Assoc([
-    ("kind", `String("Name")),
-    ("value", `String(name.value)),
-    locToJson(name.loc),
-  ]);
 
 let namedTypeToJson = (namedType: namedType) =>
   `Assoc([
