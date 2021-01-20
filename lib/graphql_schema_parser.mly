@@ -77,8 +77,8 @@ Value:
   | value=FLOAT { FloatValue({value;loc=$loc}) }
   | value=BOOL { BooleanValue({value;loc=$loc}) }
   | value=StringValue { StringValue(value) }
-  | LBRACE fields=separated_list(COMMA+, ObjectField) RBRACE { ObjectValue({fields;loc=$loc}) }
-  | LBRACKET values=separated_list(COMMA+, Value) RBRACKET { ListValue({values;loc=$loc}) }
+  | LBRACE fields=separated_list(COMMA*, ObjectField) RBRACE { ObjectValue({fields;loc=$loc}) }
+  | LBRACKET values=separated_list(COMMA*, Value) RBRACKET { ListValue({values;loc=$loc}) }
   | value=IDENTIFIER { EnumValue({value;loc=$loc}) }
 
 ObjectField:
