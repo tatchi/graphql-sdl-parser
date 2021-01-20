@@ -15,9 +15,9 @@ let%expect_test _ = {
         description
         """
         type Planet
-        
+
         type User2 {
-          name(id: String = []): String
+          name("input value description"id: String = []): String
           name(age: Int = [1, 2, [inner], { a: true }]): String
         }
 |},
@@ -290,7 +290,7 @@ let%expect_test _ = {
           "name": {
             "kind": "Name",
             "value": "User2",
-            "loc": { "start": 404, "end": 409 }
+            "loc": { "start": 396, "end": 401 }
           },
           "interfaces": [],
           "fields": [
@@ -299,59 +299,65 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "name",
-                "loc": { "start": 422, "end": 426 }
+                "loc": { "start": 414, "end": 418 }
               },
               "type": {
                 "kind": "NamedType",
                 "name": {
                   "kind": "Name",
                   "value": "String",
-                  "loc": { "start": 445, "end": 451 }
+                  "loc": { "start": 462, "end": 468 }
                 },
-                "loc": { "start": 445, "end": 451 }
+                "loc": { "start": 462, "end": 468 }
               },
               "arguments": [
                 {
+                  "description": {
+                    "kind": "StringValue",
+                    "value": "input value description",
+                    "block": false,
+                    "loc": { "start": 419, "end": 444 }
+                  },
                   "defaultValue": {
                     "kind": "ListValue",
                     "values": [],
-                    "loc": { "start": 440, "end": 442 }
+                    "loc": { "start": 457, "end": 459 }
                   },
                   "kind": "InputValueDefinition",
                   "name": {
                     "kind": "Name",
                     "value": "id",
-                    "loc": { "start": 427, "end": 429 }
+                    "loc": { "start": 444, "end": 446 }
                   },
                   "type": {
                     "kind": "NamedType",
                     "name": {
                       "kind": "Name",
                       "value": "String",
-                      "loc": { "start": 431, "end": 437 }
+                      "loc": { "start": 448, "end": 454 }
                     },
-                    "loc": { "start": 431, "end": 437 }
+                    "loc": { "start": 448, "end": 454 }
                   },
-                  "loc": { "start": 427, "end": 442 }
+                  "loc": { "start": 419, "end": 459 }
                 }
               ],
-              "loc": { "start": 411, "end": 451 }
+              "loc": { "start": 403, "end": 468 }
             },
             {
               "kind": "FieldDefinition",
               "name": {
                 "kind": "Name",
                 "value": "name",
-                "loc": { "start": 462, "end": 466 }
+                "loc": { "start": 479, "end": 483 }
               },
               "type": {
                 "kind": "NamedType",
                 "name": {
                   "kind": "Name",
                   "value": "String",
-                  "loc": { "start": 509, "end": 515 }
+                  "loc": { "start": 526, "end": 532 }
                 },
-                "loc": { "start": 509, "end": 515 }
+                "loc": { "start": 526, "end": 532 }
               },
               "arguments": [
                 {
@@ -361,12 +367,12 @@ let%expect_test _ = {
                       {
                         "kind": "IntValue",
                         "value": 1,
-                        "loc": { "start": 479, "end": 480 }
+                        "loc": { "start": 496, "end": 497 }
                       },
                       {
                         "kind": "IntValue",
                         "value": 2,
-                        "loc": { "start": 482, "end": 483 }
+                        "loc": { "start": 499, "end": 500 }
                       },
                       {
                         "kind": "ListValue",
@@ -374,10 +380,10 @@ let%expect_test _ = {
                           {
                             "kind": "EnumValue",
                             "value": "inner",
-                            "loc": { "start": 486, "end": 491 }
+                            "loc": { "start": 503, "end": 508 }
                           }
                         ],
-                        "loc": { "start": 485, "end": 492 }
+                        "loc": { "start": 502, "end": 509 }
                       },
                       {
                         "ObjectValue": "ObjectField",
@@ -387,46 +393,46 @@ let%expect_test _ = {
                             "name": {
                               "kind": "Name",
                               "value": "a",
-                              "loc": { "start": 496, "end": 497 }
+                              "loc": { "start": 513, "end": 514 }
                             },
                             "value": {
                               "kind": "BooleanValue",
                               "value": true,
-                              "loc": { "start": 499, "end": 503 }
+                              "loc": { "start": 516, "end": 520 }
                             },
-                            "loc": { "start": 496, "end": 503 }
+                            "loc": { "start": 513, "end": 520 }
                           }
                         ],
-                        "loc": { "start": 494, "end": 505 }
+                        "loc": { "start": 511, "end": 522 }
                       }
                     ],
-                    "loc": { "start": 478, "end": 506 }
+                    "loc": { "start": 495, "end": 523 }
                   },
                   "kind": "InputValueDefinition",
                   "name": {
                     "kind": "Name",
                     "value": "age",
-                    "loc": { "start": 467, "end": 470 }
+                    "loc": { "start": 484, "end": 487 }
                   },
                   "type": {
                     "kind": "NamedType",
                     "name": {
                       "kind": "Name",
                       "value": "Int",
-                      "loc": { "start": 472, "end": 475 }
+                      "loc": { "start": 489, "end": 492 }
                     },
-                    "loc": { "start": 472, "end": 475 }
+                    "loc": { "start": 489, "end": 492 }
                   },
-                  "loc": { "start": 467, "end": 506 }
+                  "loc": { "start": 484, "end": 523 }
                 }
               ],
-              "loc": { "start": 451, "end": 515 }
+              "loc": { "start": 468, "end": 532 }
             }
           ],
-          "loc": { "start": 381, "end": 525 }
+          "loc": { "start": 381, "end": 542 }
         }
       ],
-      "loc": { "start": 0, "end": 526 }
+      "loc": { "start": 0, "end": 543 }
     }
   |}
 };
