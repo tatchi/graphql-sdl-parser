@@ -85,11 +85,24 @@ type fieldDefinition = {
   loc,
 };
 
+type argument = {
+  name,
+  value,
+  loc,
+};
+
+type directive = {
+  name,
+  arguments: list(argument),
+  loc,
+};
+
 type objectType = {
   name,
   description: option(stringValue),
   fields: list(fieldDefinition),
   interfaces: list(namedType),
+  directives: list(directive),
   loc,
 };
 type enumType = {
@@ -279,12 +292,29 @@ let fieldDefinitionToJson = (field: fieldDefinition) => {
   };
 };
 
+let argumentToJson = (argument: argument) =>
+  `Assoc([
+    ("kind", `String("Argument")),
+    ("name", nameToJson(argument.name)),
+    ("value", valueToJson(argument.value)),
+    locToJson(argument.loc),
+  ]);
+
+let directiveToJson = (directive: directive) =>
+  `Assoc([
+    ("kind", `String("Directive")),
+    ("name", nameToJson(directive.name)),
+    ("arguments", `List(directive.arguments |> List.map(argumentToJson))),
+    locToJson(directive.loc),
+  ]);
+
 let objectToJson = (object_: objectType) => {
   let fields = [
     ("kind", `String("ObjectTypeDefinition")),
     ("name", nameToJson(object_.name)),
     ("interfaces", `List(object_.interfaces |> List.map(namedTypeToJson))),
     ("fields", `List(object_.fields |> List.map(fieldDefinitionToJson))),
+    ("directives", `List(object_.directives |> List.map(directiveToJson))),
     locToJson(object_.loc),
   ];
   switch (object_.description) {

@@ -13,6 +13,7 @@
 %token COMMA
 %token EXCLAMATION_MARK
 %token EQUAL
+%token AT
 %token NULL
 %token TYPE
 %token ENUM
@@ -48,8 +49,14 @@ TypeDefinition:
   ;
 
 ObjectTypeDefinition:
-  | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) fields=loption(Fields) { {name; fields; interfaces; description; loc=$loc } }
+  | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
   ;
+
+Directives:
+  | separated_list(COMMA*, Directive) { $1 }
+
+Directive:
+  | AT name=Name { {name;arguments=[];loc=$loc} }
 
 Implementations:
   | IMPLEMENTS separated_nonempty_list(AMPERSAND, NamedType) { $2 }

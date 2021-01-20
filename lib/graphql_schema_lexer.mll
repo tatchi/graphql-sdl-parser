@@ -43,6 +43,7 @@ rule read_token =
   | ":" { COLON }
   | "," { COMMA }
   | "=" { EQUAL }
+  | '@'   { AT }
   | "null" { NULL }
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
