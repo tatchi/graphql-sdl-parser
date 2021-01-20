@@ -20,7 +20,8 @@ let%expect_test _ = {
           name1("input value description" id: String = []): String
           name2(age: Int = [1, 2, [inner], { a: true }]): String
           name3(age: Int = [1, 2, [inner], { a: true, b: { c: inner } }]): String
-}
+        }
+        type User3 @dir1(id: "myId", id2: [arr]) @dir2(id: {a: 1 b:2 }), @dir3
 
 |},
     ),
@@ -267,6 +268,7 @@ let%expect_test _ = {
               "loc": { "start": 231, "end": 280 }
             }
           ],
+          "directives": [],
           "loc": { "start": 0, "end": 290 }
         },
         {
@@ -285,6 +287,7 @@ let%expect_test _ = {
           },
           "interfaces": [],
           "fields": [],
+          "directives": [],
           "loc": { "start": 299, "end": 381 }
         },
         {
@@ -545,10 +548,134 @@ let%expect_test _ = {
               "loc": { "start": 535, "end": 617 }
             }
           ],
-          "loc": { "start": 381, "end": 619 }
+          "directives": [],
+          "loc": { "start": 381, "end": 627 }
+        },
+        {
+          "kind": "ObjectTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "User3",
+            "loc": { "start": 641, "end": 646 }
+          },
+          "interfaces": [],
+          "fields": [],
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir1",
+                "loc": { "start": 648, "end": 652 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "id",
+                    "loc": { "start": 653, "end": 655 }
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "myId",
+                    "block": false,
+                    "loc": { "start": 657, "end": 663 }
+                  },
+                  "loc": { "start": 653, "end": 663 }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "id2",
+                    "loc": { "start": 665, "end": 668 }
+                  },
+                  "value": {
+                    "kind": "ListValue",
+                    "values": [
+                      {
+                        "kind": "EnumValue",
+                        "value": "arr",
+                        "loc": { "start": 671, "end": 674 }
+                      }
+                    ],
+                    "loc": { "start": 670, "end": 675 }
+                  },
+                  "loc": { "start": 665, "end": 675 }
+                }
+              ],
+              "loc": { "start": 647, "end": 676 }
+            },
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir2",
+                "loc": { "start": 678, "end": 682 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "id",
+                    "loc": { "start": 683, "end": 685 }
+                  },
+                  "value": {
+                    "ObjectValue": "ObjectField",
+                    "fields": [
+                      {
+                        "kind": "ObjectField",
+                        "name": {
+                          "kind": "Name",
+                          "value": "a",
+                          "loc": { "start": 688, "end": 689 }
+                        },
+                        "value": {
+                          "kind": "IntValue",
+                          "value": 1,
+                          "loc": { "start": 691, "end": 692 }
+                        },
+                        "loc": { "start": 688, "end": 692 }
+                      },
+                      {
+                        "kind": "ObjectField",
+                        "name": {
+                          "kind": "Name",
+                          "value": "b",
+                          "loc": { "start": 693, "end": 694 }
+                        },
+                        "value": {
+                          "kind": "IntValue",
+                          "value": 2,
+                          "loc": { "start": 695, "end": 696 }
+                        },
+                        "loc": { "start": 693, "end": 696 }
+                      }
+                    ],
+                    "loc": { "start": 687, "end": 698 }
+                  },
+                  "loc": { "start": 683, "end": 698 }
+                }
+              ],
+              "loc": { "start": 677, "end": 699 }
+            },
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir3",
+                "loc": { "start": 702, "end": 706 }
+              },
+              "arguments": [],
+              "loc": { "start": 701, "end": 706 }
+            }
+          ],
+          "loc": { "start": 627, "end": 706 }
         }
       ],
-      "loc": { "start": 0, "end": 621 }
+      "loc": { "start": 0, "end": 708 }
     }
   |}
 };
