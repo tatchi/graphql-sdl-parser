@@ -21,7 +21,7 @@ let%expect_test _ = {
           name2(age: Int = [1, 2, [inner], { a: true }]): String
           name3(age: Int = [1, 2, [inner], { a: true, b: { c: inner } }]): String
         }
-        type User3 @dir1(id: "myId", id2: [arr]) @dir2(id: {a: 1 b:2 }), @dir3
+        type User3 @ dir1(id: "myId", id2: [arr]) @dir2(id: {a: 1 b:2 }), @dir3
 
 |},
     ),
@@ -566,7 +566,7 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "dir1",
-                "loc": { "start": 648, "end": 652 }
+                "loc": { "start": 649, "end": 653 }
               },
               "arguments": [
                 {
@@ -574,22 +574,22 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "id",
-                    "loc": { "start": 653, "end": 655 }
+                    "loc": { "start": 654, "end": 656 }
                   },
                   "value": {
                     "kind": "StringValue",
                     "value": "myId",
                     "block": false,
-                    "loc": { "start": 657, "end": 663 }
+                    "loc": { "start": 658, "end": 664 }
                   },
-                  "loc": { "start": 653, "end": 663 }
+                  "loc": { "start": 654, "end": 664 }
                 },
                 {
                   "kind": "Argument",
                   "name": {
                     "kind": "Name",
                     "value": "id2",
-                    "loc": { "start": 665, "end": 668 }
+                    "loc": { "start": 666, "end": 669 }
                   },
                   "value": {
                     "kind": "ListValue",
@@ -597,22 +597,22 @@ let%expect_test _ = {
                       {
                         "kind": "EnumValue",
                         "value": "arr",
-                        "loc": { "start": 671, "end": 674 }
+                        "loc": { "start": 672, "end": 675 }
                       }
                     ],
-                    "loc": { "start": 670, "end": 675 }
+                    "loc": { "start": 671, "end": 676 }
                   },
-                  "loc": { "start": 665, "end": 675 }
+                  "loc": { "start": 666, "end": 676 }
                 }
               ],
-              "loc": { "start": 647, "end": 676 }
+              "loc": { "start": 647, "end": 677 }
             },
             {
               "kind": "Directive",
               "name": {
                 "kind": "Name",
                 "value": "dir2",
-                "loc": { "start": 678, "end": 682 }
+                "loc": { "start": 679, "end": 683 }
               },
               "arguments": [
                 {
@@ -620,7 +620,7 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "id",
-                    "loc": { "start": 683, "end": 685 }
+                    "loc": { "start": 684, "end": 686 }
                   },
                   "value": {
                     "ObjectValue": "ObjectField",
@@ -630,52 +630,52 @@ let%expect_test _ = {
                         "name": {
                           "kind": "Name",
                           "value": "a",
-                          "loc": { "start": 688, "end": 689 }
+                          "loc": { "start": 689, "end": 690 }
                         },
                         "value": {
                           "kind": "IntValue",
                           "value": 1,
-                          "loc": { "start": 691, "end": 692 }
+                          "loc": { "start": 692, "end": 693 }
                         },
-                        "loc": { "start": 688, "end": 692 }
+                        "loc": { "start": 689, "end": 693 }
                       },
                       {
                         "kind": "ObjectField",
                         "name": {
                           "kind": "Name",
                           "value": "b",
-                          "loc": { "start": 693, "end": 694 }
+                          "loc": { "start": 694, "end": 695 }
                         },
                         "value": {
                           "kind": "IntValue",
                           "value": 2,
-                          "loc": { "start": 695, "end": 696 }
+                          "loc": { "start": 696, "end": 697 }
                         },
-                        "loc": { "start": 693, "end": 696 }
+                        "loc": { "start": 694, "end": 697 }
                       }
                     ],
-                    "loc": { "start": 687, "end": 698 }
+                    "loc": { "start": 688, "end": 699 }
                   },
-                  "loc": { "start": 683, "end": 698 }
+                  "loc": { "start": 684, "end": 699 }
                 }
               ],
-              "loc": { "start": 677, "end": 699 }
+              "loc": { "start": 678, "end": 700 }
             },
             {
               "kind": "Directive",
               "name": {
                 "kind": "Name",
                 "value": "dir3",
-                "loc": { "start": 702, "end": 706 }
+                "loc": { "start": 703, "end": 707 }
               },
               "arguments": [],
-              "loc": { "start": 701, "end": 706 }
+              "loc": { "start": 702, "end": 707 }
             }
           ],
-          "loc": { "start": 627, "end": 706 }
+          "loc": { "start": 627, "end": 707 }
         }
       ],
-      "loc": { "start": 0, "end": 708 }
+      "loc": { "start": 0, "end": 709 }
     }
   |}
 };
