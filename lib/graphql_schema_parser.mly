@@ -56,10 +56,14 @@ Directives:
   | separated_list(COMMA*, Directive) { $1 }
 
 Directive:
-  | AT name=Name arguments=loption(DirectiveArguments) { {name;arguments;loc=$loc} }
+  | AT name=Name arguments=loption(OptDirectiveArguments) { {name;arguments;loc=$loc} }
 
-DirectiveArguments:
-  | LPAREN separated_nonempty_list(COMMA*, DirectiveArgument) RPAREN { $2 }
+OptDirectiveArguments:
+  | LPAREN DirectiveArgumentList RPAREN { $2 }
+
+DirectiveArgumentList:
+  | DirectiveArgument { [$1] }
+  | DirectiveArgumentList COMMA DirectiveArgument { $1@[$3] }
 
 DirectiveArgument:
   | name=Name COLON value=Value { {name;value;loc=$loc} }
@@ -75,10 +79,10 @@ Field:
   | description=option(StringValue) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
 
 FieldArguments:
-  | LPAREN separated_nonempty_list(COMMA*, FieldArgument) RPAREN { $2 }
+  | LPAREN separated_nonempty_list(COMMA*, FieldArgument) RPAREN  { $2 }
 
 FieldArgument:
-  | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) directives=Directives { {name;description;type_;defaultValue;directives;loc=$loc} }
+  | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;directives=[];loc=$loc} }
 
 
 DefaultArgumentValue:
