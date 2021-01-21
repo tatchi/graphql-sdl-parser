@@ -68,23 +68,6 @@ and fieldType =
       loc,
     });
 
-type inputValueDefinition = {
-  name,
-  type_: fieldType,
-  description: option(stringValue),
-  loc,
-  defaultValue: option(value),
-  // directives
-};
-
-type fieldDefinition = {
-  name,
-  type_: fieldType,
-  description: option(stringValue),
-  arguments: list(inputValueDefinition),
-  loc,
-};
-
 type argument = {
   name,
   value,
@@ -97,12 +80,31 @@ type directive = {
   loc,
 };
 
+type directives = list(directive);
+
+type inputValueDefinition = {
+  name,
+  type_: fieldType,
+  description: option(stringValue),
+  loc,
+  defaultValue: option(value),
+  directives,
+};
+
+type fieldDefinition = {
+  name,
+  type_: fieldType,
+  description: option(stringValue),
+  arguments: list(inputValueDefinition),
+  loc,
+};
+
 type objectType = {
   name,
   description: option(stringValue),
   fields: list(fieldDefinition),
   interfaces: list(namedType),
-  directives: list(directive),
+  directives,
   loc,
 };
 type enumType = {
@@ -250,11 +252,31 @@ and fieldTypeToJson = fieldType =>
     ])
   };
 
+let argumentToJson = (argument: argument) =>
+  `Assoc([
+    ("kind", `String("Argument")),
+    ("name", nameToJson(argument.name)),
+    ("value", valueToJson(argument.value)),
+    locToJson(argument.loc),
+  ]);
+
+let directiveToJson = (directive: directive) =>
+  `Assoc([
+    ("kind", `String("Directive")),
+    ("name", nameToJson(directive.name)),
+    ("arguments", `List(directive.arguments |> List.map(argumentToJson))),
+    locToJson(directive.loc),
+  ]);
+
 let inputValueDefinitionToJson = (inputValueDefinition: inputValueDefinition) => {
   let fields = [
     ("kind", `String("InputValueDefinition")),
     ("name", nameToJson(inputValueDefinition.name)),
     ("type", fieldTypeToJson(inputValueDefinition.type_)),
+    (
+      "directives",
+      `List(inputValueDefinition.directives |> List.map(directiveToJson)),
+    ),
     locToJson(inputValueDefinition.loc),
   ];
 
@@ -291,22 +313,6 @@ let fieldDefinitionToJson = (field: fieldDefinition) => {
     `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
-
-let argumentToJson = (argument: argument) =>
-  `Assoc([
-    ("kind", `String("Argument")),
-    ("name", nameToJson(argument.name)),
-    ("value", valueToJson(argument.value)),
-    locToJson(argument.loc),
-  ]);
-
-let directiveToJson = (directive: directive) =>
-  `Assoc([
-    ("kind", `String("Directive")),
-    ("name", nameToJson(directive.name)),
-    ("arguments", `List(directive.arguments |> List.map(argumentToJson))),
-    locToJson(directive.loc),
-  ]);
 
 let objectToJson = (object_: objectType) => {
   let fields = [
