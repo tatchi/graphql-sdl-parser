@@ -10,7 +10,6 @@
 %token LPAREN
 %token RPAREN
 %token COLON
-%token COMMA
 %token EXCLAMATION_MARK
 %token EQUAL
 %token AT
@@ -53,13 +52,13 @@ ObjectTypeDefinition:
   ;
 
 Directives:
-  | separated_list(COMMA*, Directive) { $1 }
+  | list(Directive) { $1 }
 
 Directive:
   | AT name=Name arguments=loption(DirectiveArguments) { {name;arguments;loc=$loc} }
 
 DirectiveArguments:
-  | LPAREN separated_nonempty_list(COMMA*, DirectiveArgument) RPAREN { $2 }
+  | LPAREN nonempty_list(DirectiveArgument) RPAREN { $2 }
 
 DirectiveArgument:
   | name=Name COLON value=Value { {name;value;loc=$loc} }
@@ -75,7 +74,7 @@ Field:
   | description=option(StringValue) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
 
 FieldArguments:
-  | LPAREN separated_nonempty_list(COMMA*, FieldArgument) RPAREN { $2 }
+  | LPAREN nonempty_list(FieldArgument) RPAREN { $2 }
 
 FieldArgument:
   | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;loc=$loc} }
@@ -90,8 +89,8 @@ Value:
   | value=FLOAT { FloatValue({value;loc=$loc}) }
   | value=BOOL { BooleanValue({value;loc=$loc}) }
   | value=StringValue { StringValue(value) }
-  | LBRACE fields=separated_list(COMMA*, ObjectField) RBRACE { ObjectValue({fields;loc=$loc}) }
-  | LBRACKET values=separated_list(COMMA*, Value) RBRACKET { ListValue({values;loc=$loc}) }
+  | LBRACE fields=list(ObjectField) RBRACE { ObjectValue({fields;loc=$loc}) }
+  | LBRACKET values=list(Value) RBRACKET { ListValue({values;loc=$loc}) }
   | value=IDENTIFIER { EnumValue({value;loc=$loc}) }
 
 ObjectField:

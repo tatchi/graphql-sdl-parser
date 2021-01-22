@@ -17,7 +17,7 @@ let int = '-'? digit+  (* regex for integers *)
 let float = '-'? digit+ '.' digit+
 let bool = "true" | "false"
 let id = (alpha) (alpha|digit|'_')* (* regex for identifier *)
-let whitespace = [' ' '\t']+
+let whitespace = [' ' ',' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 let string = "\"[^\"]*\""
 let quoted = '"'([^'\n']*)'"'
@@ -41,7 +41,6 @@ rule read_token =
   | '(' { LPAREN }
   | ')' { RPAREN }
   | ":" { COLON }
-  | "," { COMMA }
   | "=" { EQUAL }
   | '@'   { AT }
   | "null" { NULL }
