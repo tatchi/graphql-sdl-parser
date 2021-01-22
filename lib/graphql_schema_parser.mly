@@ -71,7 +71,7 @@ Fields:
   | LBRACE nonempty_list(Field) RBRACE { $2 }
 
 Field: 
-  | description=option(StringValue) name=Name arguments=loption(FieldArguments) COLON type_=FieldType { {name;description;type_;arguments;loc=$loc} }
+  | description=option(StringValue) name=Name arguments=loption(FieldArguments) COLON type_=FieldType directives=Directives { {name;description;type_;arguments;directives;loc=$loc} }
 
 FieldArguments:
   | LPAREN nonempty_list(FieldArgument) RPAREN { $2 }

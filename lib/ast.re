@@ -96,6 +96,7 @@ type fieldDefinition = {
   type_: fieldType,
   description: option(stringValue),
   arguments: list(inputValueDefinition),
+  directives,
   loc,
 };
 
@@ -305,6 +306,7 @@ let fieldDefinitionToJson = (field: fieldDefinition) => {
       "arguments",
       `List(field.arguments |> List.map(inputValueDefinitionToJson)),
     ),
+    ("directives", `List(field.directives |> List.map(directiveToJson))),
     locToJson(field.loc),
   ];
   switch (field.description) {

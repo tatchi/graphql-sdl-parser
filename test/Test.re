@@ -24,6 +24,9 @@ let%expect_test _ = {
         type User3 @dir1(id: "myId", id2: [arr]) @dir2(id: { a: 1, b: 2 }) @dir3 {
           name(id: Int @idDirective(user: "Marc"), id2: Int @dir2, id3: Int): String
         }
+        type User4 {
+          name: String @dir(id: 6)
+        }
 
 
 |},
@@ -95,6 +98,7 @@ let%expect_test _ = {
                 "loc": { "start": 129, "end": 136 }
               },
               "arguments": [],
+              "directives": [],
               "loc": { "start": 89, "end": 136 }
             },
             {
@@ -126,6 +130,7 @@ let%expect_test _ = {
                 "loc": { "start": 152, "end": 159 }
               },
               "arguments": [],
+              "directives": [],
               "loc": { "start": 136, "end": 159 }
             },
             {
@@ -202,6 +207,7 @@ let%expect_test _ = {
                   "loc": { "start": 211, "end": 221 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 159, "end": 231 }
             },
             {
@@ -272,6 +278,7 @@ let%expect_test _ = {
                   "loc": { "start": 260, "end": 270 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 231, "end": 280 }
             }
           ],
@@ -354,6 +361,7 @@ let%expect_test _ = {
                   "loc": { "start": 420, "end": 461 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 403, "end": 470 }
             },
             {
@@ -440,6 +448,7 @@ let%expect_test _ = {
                   "loc": { "start": 487, "end": 526 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 470, "end": 535 }
             },
             {
@@ -555,6 +564,7 @@ let%expect_test _ = {
                   "loc": { "start": 552, "end": 608 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 535, "end": 617 }
             }
           ],
@@ -683,6 +693,7 @@ let%expect_test _ = {
                   "loc": { "start": 776, "end": 786 }
                 }
               ],
+              "directives": [],
               "loc": { "start": 710, "end": 795 }
             }
           ],
@@ -799,9 +810,68 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 627, "end": 805 }
+        },
+        {
+          "kind": "ObjectTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "User4",
+            "loc": { "start": 819, "end": 824 }
+          },
+          "interfaces": [],
+          "fields": [
+            {
+              "kind": "FieldDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "name",
+                "loc": { "start": 837, "end": 841 }
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String",
+                  "loc": { "start": 843, "end": 849 }
+                },
+                "loc": { "start": 843, "end": 849 }
+              },
+              "arguments": [],
+              "directives": [
+                {
+                  "kind": "Directive",
+                  "name": {
+                    "kind": "Name",
+                    "value": "dir",
+                    "loc": { "start": 851, "end": 854 }
+                  },
+                  "arguments": [
+                    {
+                      "kind": "Argument",
+                      "name": {
+                        "kind": "Name",
+                        "value": "id",
+                        "loc": { "start": 855, "end": 857 }
+                      },
+                      "value": {
+                        "kind": "IntValue",
+                        "value": 6,
+                        "loc": { "start": 859, "end": 860 }
+                      },
+                      "loc": { "start": 855, "end": 860 }
+                    }
+                  ],
+                  "loc": { "start": 850, "end": 861 }
+                }
+              ],
+              "loc": { "start": 826, "end": 861 }
+            }
+          ],
+          "directives": [],
+          "loc": { "start": 805, "end": 871 }
         }
       ],
-      "loc": { "start": 0, "end": 808 }
+      "loc": { "start": 0, "end": 874 }
     }
   |}
 };
