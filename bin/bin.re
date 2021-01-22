@@ -1,6 +1,7 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|type User {
+    {|#this is a comment
+  type User {
   name: String @lol(id: 5)
 }|},
   ),

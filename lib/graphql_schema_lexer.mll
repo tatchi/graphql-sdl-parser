@@ -50,8 +50,14 @@ rule read_token =
   | "implements" { IMPLEMENTS }
   | "&" { AMPERSAND }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
+  | "#" { read_single_line_comment lexbuf }
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }
+
+  and read_single_line_comment = parse
+  | newline { next_line lexbuf; read_token lexbuf } 
+  | eof { EOF }
+  | _ { read_single_line_comment lexbuf }
 
   and read_string buf terminator start_pos =
   parse
