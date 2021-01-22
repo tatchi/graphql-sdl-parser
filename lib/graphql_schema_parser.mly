@@ -77,7 +77,7 @@ FieldArguments:
   | LPAREN nonempty_list(FieldArgument) RPAREN { $2 }
 
 FieldArgument:
-  | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) { {name;description;type_;defaultValue;loc=$loc} }
+  | description=option(StringValue) name=Name COLON type_=FieldType defaultValue=option(DefaultArgumentValue) directives=Directives { {name;description;type_;defaultValue;directives;loc=$loc} }
 
 
 DefaultArgumentValue:
