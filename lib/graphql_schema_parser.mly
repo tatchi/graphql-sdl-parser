@@ -52,7 +52,7 @@ ObjectTypeDefinition:
   ;
 
 EnumTypeDefinition:
-  | description=option(StringValue) ENUM name=Name values=loption(EnumValues) { {name; loc=$loc; directives=[]; values; description } }
+  | description=option(StringValue) ENUM name=Name directives=Directives values=loption(EnumValues) { {name; loc=$loc; directives; values; description } }
   ;
 
 
@@ -60,7 +60,7 @@ EnumValues:
   | LBRACE nonempty_list(EnumValue) RBRACE { $2 }
 
 EnumValue:
-  | description=option(StringValue) name=Name { {name;description;directives=[];loc=$loc} }
+  | description=option(StringValue) name=Name directives=Directives { {name;description;directives;loc=$loc} }
 
 Directives:
   | list(Directive) { $1 }

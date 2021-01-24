@@ -31,9 +31,9 @@ let%expect_test _ = {
         }
 
         "EnumTypeDefinition description"
-        enum colors {
+        enum colors @myDirective(count: 6) {
           "EnumValueDefinition description"
-          BLACK
+          BLACK @dir(id: "xjs")
           RED
         }
 
@@ -893,39 +893,92 @@ let%expect_test _ = {
             "value": "colors",
             "loc": { "start": 1019, "end": 1025 }
           },
-          "directives": [],
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "myDirective",
+                "loc": { "start": 1027, "end": 1038 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "count",
+                    "loc": { "start": 1039, "end": 1044 }
+                  },
+                  "value": {
+                    "kind": "IntValue",
+                    "value": 6,
+                    "loc": { "start": 1046, "end": 1047 }
+                  },
+                  "loc": { "start": 1039, "end": 1047 }
+                }
+              ],
+              "loc": { "start": 1026, "end": 1048 }
+            }
+          ],
           "values": [
             {
               "description": {
                 "kind": "StringValue",
                 "value": "EnumValueDefinition description",
                 "block": false,
-                "loc": { "start": 1038, "end": 1071 }
+                "loc": { "start": 1061, "end": 1094 }
               },
               "kind": "EnumValueDefinition",
               "name": {
                 "kind": "Name",
                 "value": "BLACK",
-                "loc": { "start": 1082, "end": 1087 }
+                "loc": { "start": 1105, "end": 1110 }
               },
-              "directives": [],
-              "loc": { "start": 1038, "end": 1087 }
+              "directives": [
+                {
+                  "kind": "Directive",
+                  "name": {
+                    "kind": "Name",
+                    "value": "dir",
+                    "loc": { "start": 1112, "end": 1115 }
+                  },
+                  "arguments": [
+                    {
+                      "kind": "Argument",
+                      "name": {
+                        "kind": "Name",
+                        "value": "id",
+                        "loc": { "start": 1116, "end": 1118 }
+                      },
+                      "value": {
+                        "kind": "StringValue",
+                        "value": "xjs",
+                        "block": false,
+                        "loc": { "start": 1120, "end": 1125 }
+                      },
+                      "loc": { "start": 1116, "end": 1125 }
+                    }
+                  ],
+                  "loc": { "start": 1111, "end": 1126 }
+                }
+              ],
+              "loc": { "start": 1061, "end": 1126 }
             },
             {
               "kind": "EnumValueDefinition",
               "name": {
                 "kind": "Name",
                 "value": "RED",
-                "loc": { "start": 1098, "end": 1101 }
+                "loc": { "start": 1137, "end": 1140 }
               },
               "directives": [],
-              "loc": { "start": 1087, "end": 1101 }
+              "loc": { "start": 1126, "end": 1140 }
             }
           ],
-          "loc": { "start": 973, "end": 1111 }
+          "loc": { "start": 973, "end": 1150 }
         }
       ],
-      "loc": { "start": 0, "end": 1115 }
+      "loc": { "start": 0, "end": 1154 }
     }
   |}
 };

@@ -1,9 +1,7 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|"EnumTypeDefinition description"
-enum colors {
-  	"EnumValueDefinition description"
-	BLACK
+    {|enum colors @myDirective(nb: 8) {
+	BLACK @dir(id: 4)
   RED
 }|},
   ),
