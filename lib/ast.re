@@ -110,6 +110,15 @@ type objectType = {
   loc,
 };
 
+type interfaceType = {
+  name,
+  description,
+  fields: list(fieldDefinition),
+  interfaces: list(namedType),
+  directives,
+  loc,
+};
+
 type enumValueDefinition = {
   name,
   description,
@@ -128,8 +137,8 @@ type enumType = {
 type typeDefinition =
   // | Scalar(ScalarType<'a, T>),
   | Object(objectType)
-  | Enum(enumType);
-// Interface(InterfaceType<'a, T>),
+  | Enum(enumType)
+  | Interface(interfaceType);
 // Union(UnionType<'a, T>),
 // InputObject(InputObjectType<'a, T>),
 type definition =
@@ -341,6 +350,27 @@ let objectToJson = (object_: objectType) => {
     `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
+let interfaceToJson = (interface: interfaceType) => {
+  let fields = [
+    ("kind", `String("InterfaceTypeDefinition")),
+    ("name", nameToJson(interface.name)),
+    (
+      "interfaces",
+      `List(interface.interfaces |> List.map(namedTypeToJson)),
+    ),
+    ("fields", `List(interface.fields |> List.map(fieldDefinitionToJson))),
+    (
+      "directives",
+      `List(interface.directives |> List.map(directiveToJson)),
+    ),
+    locToJson(interface.loc),
+  ];
+  switch (interface.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
 
 let enumValueDefinitionToJson = (enumValueDef: enumValueDefinition) => {
   let fields = [
@@ -378,6 +408,7 @@ let enumToJson = (enum: enumType) => {
 let typeDefinitionToJson = typeDefinition =>
   switch (typeDefinition) {
   | Object(object_) => objectToJson(object_)
+  | Interface(interface) => interfaceToJson(interface)
   | Enum(enum) => enumToJson(enum)
   };
 

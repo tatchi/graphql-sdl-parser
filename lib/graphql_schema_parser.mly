@@ -15,6 +15,7 @@
 %token AT
 %token NULL
 %token TYPE
+%token INTERFACE
 %token ENUM
 %token IMPLEMENTS
 %token AMPERSAND
@@ -44,6 +45,7 @@ Definition:
 
 TypeDefinition:
   | ObjectTypeDefinition { Object($1) }
+  | InterfaceTypeDefinition { Interface($1) }
   | EnumTypeDefinition { Enum($1) }
   ;
 
@@ -54,6 +56,9 @@ ObjectTypeDefinition:
 EnumTypeDefinition:
   | description=option(StringValue) ENUM name=Name directives=Directives values=loption(EnumValues) { {name; loc=$loc; directives; values; description } }
   ;
+
+InterfaceTypeDefinition:
+  | description=option(StringValue) INTERFACE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
 
 
 EnumValues:

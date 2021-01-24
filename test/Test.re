@@ -37,6 +37,11 @@ let%expect_test _ = {
           RED
         }
 
+        interface Person implements Character @topDir {
+          name: String @dir(id: 5)
+        }
+
+
 
 
 |},
@@ -976,9 +981,89 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 973, "end": 1150 }
+        },
+        {
+          "kind": "InterfaceTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "Person",
+            "loc": { "start": 1170, "end": 1176 }
+          },
+          "interfaces": [
+            {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "Character",
+                "loc": { "start": 1188, "end": 1197 }
+              },
+              "loc": { "start": 1188, "end": 1197 }
+            }
+          ],
+          "fields": [
+            {
+              "kind": "FieldDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "name",
+                "loc": { "start": 1218, "end": 1222 }
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String",
+                  "loc": { "start": 1224, "end": 1230 }
+                },
+                "loc": { "start": 1224, "end": 1230 }
+              },
+              "arguments": [],
+              "directives": [
+                {
+                  "kind": "Directive",
+                  "name": {
+                    "kind": "Name",
+                    "value": "dir",
+                    "loc": { "start": 1232, "end": 1235 }
+                  },
+                  "arguments": [
+                    {
+                      "kind": "Argument",
+                      "name": {
+                        "kind": "Name",
+                        "value": "id",
+                        "loc": { "start": 1236, "end": 1238 }
+                      },
+                      "value": {
+                        "kind": "IntValue",
+                        "value": 5,
+                        "loc": { "start": 1240, "end": 1241 }
+                      },
+                      "loc": { "start": 1236, "end": 1241 }
+                    }
+                  ],
+                  "loc": { "start": 1231, "end": 1242 }
+                }
+              ],
+              "loc": { "start": 1207, "end": 1242 }
+            }
+          ],
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "topDir",
+                "loc": { "start": 1199, "end": 1205 }
+              },
+              "arguments": [],
+              "loc": { "start": 1198, "end": 1205 }
+            }
+          ],
+          "loc": { "start": 1150, "end": 1252 }
         }
       ],
-      "loc": { "start": 0, "end": 1154 }
+      "loc": { "start": 0, "end": 1257 }
     }
   |}
 };

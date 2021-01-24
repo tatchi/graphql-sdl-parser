@@ -46,6 +46,7 @@ rule read_token =
   | "null" { NULL }
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
+  | "interface" { INTERFACE }
   | "enum" { ENUM }
   | "implements" { IMPLEMENTS }
   | "&" { AMPERSAND }
