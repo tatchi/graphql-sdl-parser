@@ -81,11 +81,12 @@ type directive = {
 };
 
 type directives = list(directive);
+type description = option(stringValue);
 
 type inputValueDefinition = {
   name,
   type_: fieldType,
-  description: option(stringValue),
+  description,
   loc,
   defaultValue: option(value),
   directives,
@@ -94,7 +95,7 @@ type inputValueDefinition = {
 type fieldDefinition = {
   name,
   type_: fieldType,
-  description: option(stringValue),
+  description,
   arguments: list(inputValueDefinition),
   directives,
   loc,
@@ -102,17 +103,26 @@ type fieldDefinition = {
 
 type objectType = {
   name,
-  description: option(stringValue),
+  description,
   fields: list(fieldDefinition),
   interfaces: list(namedType),
   directives,
   loc,
 };
+
+type enumValueDefinition = {
+  name,
+  description,
+  directives,
+  loc,
+};
+
 type enumType = {
   name,
+  description,
+  directives,
+  values: list(enumValueDefinition),
   loc,
-  directives: list(string),
-  values: list(string),
 };
 
 type typeDefinition =
@@ -332,12 +342,38 @@ let objectToJson = (object_: objectType) => {
   };
 };
 
-let enumToJson = enum =>
-  `Assoc([
+let enumValueDefinitionToJson = (enumValueDef: enumValueDefinition) => {
+  let fields = [
+    ("kind", `String("EnumValueDefinition")),
+    ("name", nameToJson(enumValueDef.name)),
+    (
+      "directives",
+      `List(enumValueDef.directives |> List.map(directiveToJson)),
+    ),
+    locToJson(enumValueDef.loc),
+  ];
+  switch (enumValueDef.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
+
+let enumToJson = (enum: enumType) => {
+  let fields = [
     ("kind", `String("EnumTypeDefinition")),
     ("name", nameToJson(enum.name)),
+    ("directives", `List(enum.directives |> List.map(directiveToJson))),
+    ("values", `List(enum.values |> List.map(enumValueDefinitionToJson))),
     locToJson(enum.loc),
-  ]);
+  ];
+
+  switch (enum.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
 
 let typeDefinitionToJson = typeDefinition =>
   switch (typeDefinition) {

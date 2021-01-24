@@ -51,6 +51,17 @@ ObjectTypeDefinition:
   | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
   ;
 
+EnumTypeDefinition:
+  | description=option(StringValue) ENUM name=Name values=loption(EnumValues) { {name; loc=$loc; directives=[]; values; description } }
+  ;
+
+
+EnumValues:
+  | LBRACE nonempty_list(EnumValue) RBRACE { $2 }
+
+EnumValue:
+  | description=option(StringValue) name=Name { {name;description;directives=[];loc=$loc} }
+
 Directives:
   | list(Directive) { $1 }
 
@@ -119,9 +130,6 @@ NamedType:
   | Name { {name=$1; loc=$loc} }
   ;
   
-EnumTypeDefinition:
-  | ENUM name=Name { {name; loc=$loc; directives=[]; values=[] } }
-  ;
 
 Name:
   | IDENTIFIER { {value=$1; loc=$loc} }

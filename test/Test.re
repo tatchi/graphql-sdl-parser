@@ -30,6 +30,14 @@ let%expect_test _ = {
           name: String @dir(id: 6)
         }
 
+        "EnumTypeDefinition description"
+        enum colors {
+          "EnumValueDefinition description"
+          BLACK
+          RED
+        }
+
+
 
 |},
     ),
@@ -871,9 +879,53 @@ let%expect_test _ = {
           ],
           "directives": [],
           "loc": { "start": 897, "end": 963 }
+        },
+        {
+          "description": {
+            "kind": "StringValue",
+            "value": "EnumTypeDefinition description",
+            "block": false,
+            "loc": { "start": 973, "end": 1005 }
+          },
+          "kind": "EnumTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "colors",
+            "loc": { "start": 1019, "end": 1025 }
+          },
+          "directives": [],
+          "values": [
+            {
+              "description": {
+                "kind": "StringValue",
+                "value": "EnumValueDefinition description",
+                "block": false,
+                "loc": { "start": 1038, "end": 1071 }
+              },
+              "kind": "EnumValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "BLACK",
+                "loc": { "start": 1082, "end": 1087 }
+              },
+              "directives": [],
+              "loc": { "start": 1038, "end": 1087 }
+            },
+            {
+              "kind": "EnumValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "RED",
+                "loc": { "start": 1098, "end": 1101 }
+              },
+              "directives": [],
+              "loc": { "start": 1087, "end": 1101 }
+            }
+          ],
+          "loc": { "start": 973, "end": 1111 }
         }
       ],
-      "loc": { "start": 0, "end": 966 }
+      "loc": { "start": 0, "end": 1115 }
     }
   |}
 };
