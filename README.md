@@ -7,3 +7,4 @@
 
 * https://github.com/tahnik/graphqlx/blob/master/src/language/src/parser.mly
 * https://github.com/graphql/graphql-js/blob/master/src/language/parser.js#L217
+* https://github.com/jorisgio/menhir-workshop/blob/master/json_parser.mly
