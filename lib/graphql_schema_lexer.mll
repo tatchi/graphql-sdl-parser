@@ -41,12 +41,14 @@ rule read_token =
   | '(' { LPAREN }
   | ')' { RPAREN }
   | ":" { COLON }
+  | "|" { PIPE }
   | "=" { EQUAL }
   | '@'   { AT }
   | "null" { NULL }
   | "!" { EXCLAMATION_MARK }
   | "type" { TYPE }
   | "interface" { INTERFACE }
+  | "union" { UNION }
   | "enum" { ENUM }
   | "implements" { IMPLEMENTS }
   | "&" { AMPERSAND }

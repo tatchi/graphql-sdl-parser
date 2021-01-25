@@ -10,12 +10,14 @@
 %token LPAREN
 %token RPAREN
 %token COLON
+%token PIPE
 %token EXCLAMATION_MARK
 %token EQUAL
 %token AT
 %token NULL
 %token TYPE
 %token INTERFACE
+%token UNION
 %token ENUM
 %token IMPLEMENTS
 %token AMPERSAND
@@ -46,6 +48,7 @@ Definition:
 TypeDefinition:
   | ObjectTypeDefinition { Object($1) }
   | InterfaceTypeDefinition { Interface($1) }
+  | UnionTypeDefinition { Union($1) }
   | EnumTypeDefinition { Enum($1) }
   ;
 
@@ -59,7 +62,14 @@ EnumTypeDefinition:
 
 InterfaceTypeDefinition:
   | description=option(StringValue) INTERFACE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
+  ;
 
+UnionTypeDefinition:
+  | description=option(StringValue) UNION name=Name directives=Directives types_=loption(UnionTypes) { {name; types_; directives;description; loc=$loc } }
+  ;
+
+UnionTypes:
+  | EQUAL separated_nonempty_list(PIPE, NamedType) { $2 }
 
 EnumValues:
   | LBRACE nonempty_list(EnumValue) RBRACE { $2 }

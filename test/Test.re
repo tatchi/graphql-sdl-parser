@@ -41,6 +41,8 @@ let%expect_test _ = {
           name: String @dir(id: 5)
         }
 
+        union SearchResult @dir(a:6) = A | B
+
 
 
 
@@ -1061,9 +1063,65 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1150, "end": 1252 }
+        },
+        {
+          "kind": "UnionTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "SearchResult",
+            "loc": { "start": 1268, "end": 1280 }
+          },
+          "types": [
+            {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "A",
+                "loc": { "start": 1293, "end": 1294 }
+              },
+              "loc": { "start": 1293, "end": 1294 }
+            },
+            {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "B",
+                "loc": { "start": 1297, "end": 1298 }
+              },
+              "loc": { "start": 1297, "end": 1298 }
+            }
+          ],
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir",
+                "loc": { "start": 1282, "end": 1285 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "a",
+                    "loc": { "start": 1286, "end": 1287 }
+                  },
+                  "value": {
+                    "kind": "IntValue",
+                    "value": 6,
+                    "loc": { "start": 1288, "end": 1289 }
+                  },
+                  "loc": { "start": 1286, "end": 1289 }
+                }
+              ],
+              "loc": { "start": 1281, "end": 1290 }
+            }
+          ],
+          "loc": { "start": 1252, "end": 1298 }
         }
       ],
-      "loc": { "start": 0, "end": 1257 }
+      "loc": { "start": 0, "end": 1303 }
     }
   |}
 };
