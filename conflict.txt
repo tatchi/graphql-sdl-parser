@@ -1,0 +1,36 @@
+
+** Conflict (shift/reduce) in state 8.
+** Token involved: LPAREN
+** This state is reached from document after reading:
+
+option(StringValue) INPUT Name AT Name
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+document 
+nonempty_list(Definition) EOF 
+Definition 
+TypeDefinition 
+InputObjectTypeDefinition 
+(?)
+
+** In state 8, looking ahead at LPAREN, shifting is permitted
+** because of the following sub-derivation:
+
+option(StringValue) INPUT Name Directives loption(FieldArguments) 
+                               list(Directive) 
+                               Directive list(Directive) 
+                               AT Name loption(DirectiveArguments) 
+                                       DirectiveArguments 
+                                       . LPAREN nonempty_list(DirectiveArgument) RPAREN 
+
+** In state 8, looking ahead at LPAREN, reducing production
+** loption(DirectiveArguments) ->
+** is permitted because of the following sub-derivation:
+
+option(StringValue) INPUT Name Directives loption(FieldArguments) // lookahead token appears because loption(FieldArguments) can begin with LPAREN
+                               list(Directive) // lookahead token is inherited
+                               Directive list(Directive) // lookahead token is inherited because list(Directive) can vanish
+                               AT Name loption(DirectiveArguments) // lookahead token is inherited
+                                       . 

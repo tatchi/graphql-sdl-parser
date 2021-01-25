@@ -19,6 +19,7 @@
 %token INTERFACE
 %token UNION
 %token ENUM
+%token INPUT
 %token IMPLEMENTS
 %token AMPERSAND
 %token <string> SINGLE_LINE_STRING
@@ -46,6 +47,7 @@ Definition:
   ;
 
 TypeDefinition:
+  | InputObjectTypeDefinition { InputObject($1) }
   | ObjectTypeDefinition { Object($1) }
   | InterfaceTypeDefinition { Interface($1) }
   | UnionTypeDefinition { Union($1) }
@@ -67,6 +69,13 @@ InterfaceTypeDefinition:
 UnionTypeDefinition:
   | description=option(StringValue) UNION name=Name directives=Directives types_=loption(UnionTypes) { {name; types_; directives;description; loc=$loc } }
   ;
+
+InputObjectTypeDefinition:
+  | description=option(StringValue) INPUT name=Name directives=Directives fields=loption(InputObjectFieldArguments)  { {name; fields; directives;description; loc=$loc } }
+  ;
+
+InputObjectFieldArguments:
+  | LBRACE nonempty_list(FieldArgument) RBRACE { $2 }
 
 UnionTypes:
   | EQUAL separated_nonempty_list(PIPE, NamedType) { $2 }

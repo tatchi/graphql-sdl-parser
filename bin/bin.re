@@ -1,5 +1,8 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|union SearchResult @dir = A | B|},
+    {|input ReviewInput @dir(a: 5) {
+  stars: Int! = 5
+  commentary: String @innerDir
+}|},
   ),
 );

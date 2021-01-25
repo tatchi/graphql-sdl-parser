@@ -43,6 +43,12 @@ let%expect_test _ = {
 
         union SearchResult @dir(a:6) = A | B
 
+        input ReviewInput @dir(a: 5) {
+          stars: Int! = 5
+          commentary: String @innerDir
+        }
+
+
 
 
 
@@ -1119,9 +1125,105 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1252, "end": 1298 }
+        },
+        {
+          "kind": "InputObjectTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "ReviewInput",
+            "loc": { "start": 1314, "end": 1325 }
+          },
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir",
+                "loc": { "start": 1327, "end": 1330 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "a",
+                    "loc": { "start": 1331, "end": 1332 }
+                  },
+                  "value": {
+                    "kind": "IntValue",
+                    "value": 5,
+                    "loc": { "start": 1334, "end": 1335 }
+                  },
+                  "loc": { "start": 1331, "end": 1335 }
+                }
+              ],
+              "loc": { "start": 1326, "end": 1336 }
+            }
+          ],
+          "fields": [
+            {
+              "defaultValue": {
+                "kind": "IntValue",
+                "value": 5,
+                "loc": { "start": 1363, "end": 1364 }
+              },
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "stars",
+                "loc": { "start": 1349, "end": 1354 }
+              },
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "Int",
+                    "loc": { "start": 1356, "end": 1359 }
+                  },
+                  "loc": { "start": 1356, "end": 1359 }
+                },
+                "loc": { "start": 1356, "end": 1360 }
+              },
+              "directives": [],
+              "loc": { "start": 1338, "end": 1364 }
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "commentary",
+                "loc": { "start": 1375, "end": 1385 }
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String",
+                  "loc": { "start": 1387, "end": 1393 }
+                },
+                "loc": { "start": 1387, "end": 1393 }
+              },
+              "directives": [
+                {
+                  "kind": "Directive",
+                  "name": {
+                    "kind": "Name",
+                    "value": "innerDir",
+                    "loc": { "start": 1395, "end": 1403 }
+                  },
+                  "arguments": [],
+                  "loc": { "start": 1394, "end": 1403 }
+                }
+              ],
+              "loc": { "start": 1364, "end": 1403 }
+            }
+          ],
+          "loc": { "start": 1298, "end": 1413 }
         }
       ],
-      "loc": { "start": 0, "end": 1303 }
+      "loc": { "start": 0, "end": 1419 }
     }
   |}
 };

@@ -142,13 +142,21 @@ type unionType = {
   loc,
 };
 
+type inputObjectType = {
+  name,
+  description,
+  directives,
+  fields: list(inputValueDefinition),
+  loc,
+};
+
 type typeDefinition =
   // | Scalar(ScalarType<'a, T>),
   | Object(objectType)
   | Enum(enumType)
   | Interface(interfaceType)
-  | Union(unionType);
-// InputObject(InputObjectType<'a, T>),
+  | Union(unionType)
+  | InputObject(inputObjectType);
 type definition =
   // | SchemaDefinition(string)
   | TypeDefinition(typeDefinition);
@@ -428,12 +436,35 @@ let enumToJson = (enum: enumType) => {
   };
 };
 
+let inputObjectToJson = (inputObject: inputObjectType) => {
+  let fields = [
+    ("kind", `String("InputObjectTypeDefinition")),
+    ("name", nameToJson(inputObject.name)),
+    (
+      "directives",
+      `List(inputObject.directives |> List.map(directiveToJson)),
+    ),
+    (
+      "fields",
+      `List(inputObject.fields |> List.map(inputValueDefinitionToJson)),
+    ),
+    locToJson(inputObject.loc),
+  ];
+
+  switch (inputObject.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
+
 let typeDefinitionToJson = typeDefinition =>
   switch (typeDefinition) {
   | Object(object_) => objectToJson(object_)
   | Interface(interface) => interfaceToJson(interface)
-  | Union(union) => unionToJson(union)
   | Enum(enum) => enumToJson(enum)
+  | Union(union) => unionToJson(union)
+  | InputObject(inputObject) => inputObjectToJson(inputObject)
   };
 
 let definitionToJson = definition =>
