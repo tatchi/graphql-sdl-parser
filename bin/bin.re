@@ -1,5 +1,5 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT|},
+    {|type on @dir(a: 4e-5)|},
   ),
 );

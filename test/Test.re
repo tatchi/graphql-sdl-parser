@@ -38,7 +38,7 @@ let%expect_test _ = {
         }
 
         interface interface implements Character @topDir {
-          name: String @dir(id: 5)
+          name: String @dir(id: 5e-3)
         }
 
         union SearchResult @dir(a:6) = A | B
@@ -1043,17 +1043,17 @@ let%expect_test _ = {
                         "loc": { "start": 1239, "end": 1241 }
                       },
                       "value": {
-                        "kind": "IntValue",
-                        "value": 5,
-                        "loc": { "start": 1243, "end": 1244 }
+                        "kind": "FloatValue",
+                        "value": 0.005,
+                        "loc": { "start": 1243, "end": 1247 }
                       },
-                      "loc": { "start": 1239, "end": 1244 }
+                      "loc": { "start": 1239, "end": 1247 }
                     }
                   ],
-                  "loc": { "start": 1234, "end": 1245 }
+                  "loc": { "start": 1234, "end": 1248 }
                 }
               ],
-              "loc": { "start": 1210, "end": 1245 }
+              "loc": { "start": 1210, "end": 1248 }
             }
           ],
           "directives": [
@@ -1068,14 +1068,14 @@ let%expect_test _ = {
               "loc": { "start": 1201, "end": 1208 }
             }
           ],
-          "loc": { "start": 1150, "end": 1255 }
+          "loc": { "start": 1150, "end": 1258 }
         },
         {
           "kind": "UnionTypeDefinition",
           "name": {
             "kind": "Name",
             "value": "SearchResult",
-            "loc": { "start": 1271, "end": 1283 }
+            "loc": { "start": 1274, "end": 1286 }
           },
           "types": [
             {
@@ -1083,18 +1083,18 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "A",
-                "loc": { "start": 1296, "end": 1297 }
+                "loc": { "start": 1299, "end": 1300 }
               },
-              "loc": { "start": 1296, "end": 1297 }
+              "loc": { "start": 1299, "end": 1300 }
             },
             {
               "kind": "NamedType",
               "name": {
                 "kind": "Name",
                 "value": "B",
-                "loc": { "start": 1300, "end": 1301 }
+                "loc": { "start": 1303, "end": 1304 }
               },
-              "loc": { "start": 1300, "end": 1301 }
+              "loc": { "start": 1303, "end": 1304 }
             }
           ],
           "directives": [
@@ -1103,7 +1103,7 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "dir",
-                "loc": { "start": 1285, "end": 1288 }
+                "loc": { "start": 1288, "end": 1291 }
               },
               "arguments": [
                 {
@@ -1111,27 +1111,27 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "a",
-                    "loc": { "start": 1289, "end": 1290 }
+                    "loc": { "start": 1292, "end": 1293 }
                   },
                   "value": {
                     "kind": "IntValue",
                     "value": 6,
-                    "loc": { "start": 1291, "end": 1292 }
+                    "loc": { "start": 1294, "end": 1295 }
                   },
-                  "loc": { "start": 1289, "end": 1292 }
+                  "loc": { "start": 1292, "end": 1295 }
                 }
               ],
-              "loc": { "start": 1284, "end": 1293 }
+              "loc": { "start": 1287, "end": 1296 }
             }
           ],
-          "loc": { "start": 1255, "end": 1301 }
+          "loc": { "start": 1258, "end": 1304 }
         },
         {
           "kind": "InputObjectTypeDefinition",
           "name": {
             "kind": "Name",
             "value": "ReviewInput",
-            "loc": { "start": 1317, "end": 1328 }
+            "loc": { "start": 1320, "end": 1331 }
           },
           "directives": [
             {
@@ -1139,7 +1139,7 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "dir",
-                "loc": { "start": 1330, "end": 1333 }
+                "loc": { "start": 1333, "end": 1336 }
               },
               "arguments": [
                 {
@@ -1147,17 +1147,17 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "a",
-                    "loc": { "start": 1334, "end": 1335 }
+                    "loc": { "start": 1337, "end": 1338 }
                   },
                   "value": {
                     "kind": "IntValue",
                     "value": 5,
-                    "loc": { "start": 1337, "end": 1338 }
+                    "loc": { "start": 1340, "end": 1341 }
                   },
-                  "loc": { "start": 1334, "end": 1338 }
+                  "loc": { "start": 1337, "end": 1341 }
                 }
               ],
-              "loc": { "start": 1329, "end": 1339 }
+              "loc": { "start": 1332, "end": 1342 }
             }
           ],
           "fields": [
@@ -1165,13 +1165,13 @@ let%expect_test _ = {
               "defaultValue": {
                 "kind": "IntValue",
                 "value": 5,
-                "loc": { "start": 1365, "end": 1366 }
+                "loc": { "start": 1368, "end": 1369 }
               },
               "kind": "InputValueDefinition",
               "name": {
                 "kind": "Name",
                 "value": "stars",
-                "loc": { "start": 1352, "end": 1357 }
+                "loc": { "start": 1355, "end": 1360 }
               },
               "type": {
                 "kind": "NonNullType",
@@ -1180,30 +1180,30 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "on",
-                    "loc": { "start": 1359, "end": 1361 }
+                    "loc": { "start": 1362, "end": 1364 }
                   },
-                  "loc": { "start": 1359, "end": 1361 }
+                  "loc": { "start": 1362, "end": 1364 }
                 },
-                "loc": { "start": 1359, "end": 1362 }
+                "loc": { "start": 1362, "end": 1365 }
               },
               "directives": [],
-              "loc": { "start": 1341, "end": 1366 }
+              "loc": { "start": 1344, "end": 1369 }
             },
             {
               "kind": "InputValueDefinition",
               "name": {
                 "kind": "Name",
                 "value": "commentary",
-                "loc": { "start": 1377, "end": 1387 }
+                "loc": { "start": 1380, "end": 1390 }
               },
               "type": {
                 "kind": "NamedType",
                 "name": {
                   "kind": "Name",
                   "value": "String",
-                  "loc": { "start": 1389, "end": 1395 }
+                  "loc": { "start": 1392, "end": 1398 }
                 },
-                "loc": { "start": 1389, "end": 1395 }
+                "loc": { "start": 1392, "end": 1398 }
               },
               "directives": [
                 {
@@ -1211,29 +1211,29 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "innerDir",
-                    "loc": { "start": 1397, "end": 1405 }
+                    "loc": { "start": 1400, "end": 1408 }
                   },
                   "arguments": [],
-                  "loc": { "start": 1396, "end": 1405 }
+                  "loc": { "start": 1399, "end": 1408 }
                 }
               ],
-              "loc": { "start": 1366, "end": 1405 }
+              "loc": { "start": 1369, "end": 1408 }
             }
           ],
-          "loc": { "start": 1301, "end": 1415 }
+          "loc": { "start": 1304, "end": 1418 }
         },
         {
           "description": {
             "kind": "StringValue",
             "value": "scalar description",
             "block": false,
-            "loc": { "start": 1425, "end": 1445 }
+            "loc": { "start": 1428, "end": 1448 }
           },
           "kind": "ScalarTypeDefinition",
           "name": {
             "kind": "Name",
             "value": "Date",
-            "loc": { "start": 1453, "end": 1457 }
+            "loc": { "start": 1456, "end": 1460 }
           },
           "directives": [
             {
@@ -1241,7 +1241,7 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "dir",
-                "loc": { "start": 1459, "end": 1462 }
+                "loc": { "start": 1462, "end": 1465 }
               },
               "arguments": [
                 {
@@ -1249,27 +1249,27 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "i",
-                    "loc": { "start": 1463, "end": 1464 }
+                    "loc": { "start": 1466, "end": 1467 }
                   },
                   "value": {
                     "kind": "IntValue",
                     "value": 5,
-                    "loc": { "start": 1465, "end": 1466 }
+                    "loc": { "start": 1468, "end": 1469 }
                   },
-                  "loc": { "start": 1463, "end": 1466 }
+                  "loc": { "start": 1466, "end": 1469 }
                 }
               ],
-              "loc": { "start": 1458, "end": 1467 }
+              "loc": { "start": 1461, "end": 1470 }
             }
           ],
-          "loc": { "start": 1425, "end": 1467 }
+          "loc": { "start": 1428, "end": 1470 }
         },
         {
           "kind": "DirectiveDefinition",
           "name": {
             "kind": "Name",
             "value": "skip",
-            "loc": { "start": 1488, "end": 1492 }
+            "loc": { "start": 1491, "end": 1495 }
           },
           "arguments": [
             {
@@ -1277,7 +1277,7 @@ let%expect_test _ = {
               "name": {
                 "kind": "Name",
                 "value": "if",
-                "loc": { "start": 1493, "end": 1495 }
+                "loc": { "start": 1496, "end": 1498 }
               },
               "type": {
                 "kind": "NonNullType",
@@ -1286,14 +1286,14 @@ let%expect_test _ = {
                   "name": {
                     "kind": "Name",
                     "value": "Boolean",
-                    "loc": { "start": 1497, "end": 1504 }
+                    "loc": { "start": 1500, "end": 1507 }
                   },
-                  "loc": { "start": 1497, "end": 1504 }
+                  "loc": { "start": 1500, "end": 1507 }
                 },
-                "loc": { "start": 1497, "end": 1505 }
+                "loc": { "start": 1500, "end": 1508 }
               },
               "directives": [],
-              "loc": { "start": 1493, "end": 1505 }
+              "loc": { "start": 1496, "end": 1508 }
             }
           ],
           "repeatable": false,
@@ -1301,23 +1301,23 @@ let%expect_test _ = {
             {
               "kind": "Name",
               "value": "FIELD",
-              "loc": { "start": 1510, "end": 1515 }
+              "loc": { "start": 1513, "end": 1518 }
             },
             {
               "kind": "Name",
               "value": "FRAGMENT_SPREAD",
-              "loc": { "start": 1518, "end": 1533 }
+              "loc": { "start": 1521, "end": 1536 }
             },
             {
               "kind": "Name",
               "value": "INLINE_FRAGMENT",
-              "loc": { "start": 1536, "end": 1551 }
+              "loc": { "start": 1539, "end": 1554 }
             }
           ],
-          "loc": { "start": 1467, "end": 1551 }
+          "loc": { "start": 1470, "end": 1554 }
         }
       ],
-      "loc": { "start": 0, "end": 1553 }
+      "loc": { "start": 0, "end": 1556 }
     }
   |}
 };
