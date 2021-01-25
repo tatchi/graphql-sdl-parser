@@ -51,8 +51,10 @@ rule read_token =
   | "union" { UNION }
   | "enum" { ENUM }
   | "scalar" { SCALAR }
+  | "directive" { DIRECTIVE }
   | "implements" { IMPLEMENTS }
   | "input" { INPUT }
+  | "on" { ON }
   | "&" { AMPERSAND }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
   | "#" { read_single_line_comment lexbuf }

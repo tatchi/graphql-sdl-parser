@@ -157,10 +157,20 @@ type typeDefinition =
   | Union(unionType)
   | InputObject(inputObjectType)
   | Scalar(valueDefinition);
+
+type directiveDefinition = {
+  name,
+  description,
+  arguments: list(inputValueDefinition),
+  repeatable: bool,
+  locations: list(name),
+  loc,
+};
+
 type definition =
   // | SchemaDefinition(string)
-  | TypeDefinition(typeDefinition);
-// | DirectiveDefinition(string);
+  | TypeDefinition(typeDefinition)
+  | DirectiveDefinition(directiveDefinition);
 
 type document = {
   definitions: list(definition),
@@ -470,9 +480,36 @@ let typeDefinitionToJson = typeDefinition =>
   | Scalar(scalar) => scalarToJson(scalar)
   };
 
+let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
+  let fields = [
+    ("kind", `String("DirectiveDefinition")),
+    ("name", nameToJson(directiveDefinition.name)),
+    (
+      "arguments",
+      `List(
+        directiveDefinition.arguments |> List.map(inputValueDefinitionToJson),
+      ),
+    ),
+    ("repeatable", `Bool(directiveDefinition.repeatable)),
+    (
+      "locations",
+      `List(directiveDefinition.locations |> List.map(nameToJson)),
+    ),
+    locToJson(directiveDefinition.loc),
+  ];
+
+  switch (directiveDefinition.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
+
 let definitionToJson = definition =>
   switch (definition) {
   | TypeDefinition(typeDefinition) => typeDefinitionToJson(typeDefinition)
+  | DirectiveDefinition(directiveDefinition) =>
+    directiveDefinitionToJson(directiveDefinition)
   };
 
 let toJson = document =>

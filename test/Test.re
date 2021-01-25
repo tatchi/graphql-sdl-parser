@@ -50,6 +50,8 @@ let%expect_test _ = {
 
         "scalar description" scalar Date @dir(i:5)
 
+        directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
 |},
     ),
   );
@@ -1261,9 +1263,61 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1423, "end": 1465 }
+        },
+        {
+          "kind": "DirectiveDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "skip",
+            "loc": { "start": 1486, "end": 1490 }
+          },
+          "arguments": [
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "if",
+                "loc": { "start": 1491, "end": 1493 }
+              },
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "Boolean",
+                    "loc": { "start": 1495, "end": 1502 }
+                  },
+                  "loc": { "start": 1495, "end": 1502 }
+                },
+                "loc": { "start": 1495, "end": 1503 }
+              },
+              "directives": [],
+              "loc": { "start": 1491, "end": 1503 }
+            }
+          ],
+          "repeatable": false,
+          "locations": [
+            {
+              "kind": "Name",
+              "value": "FIELD",
+              "loc": { "start": 1508, "end": 1513 }
+            },
+            {
+              "kind": "Name",
+              "value": "FRAGMENT_SPREAD",
+              "loc": { "start": 1516, "end": 1531 }
+            },
+            {
+              "kind": "Name",
+              "value": "INLINE_FRAGMENT",
+              "loc": { "start": 1534, "end": 1549 }
+            }
+          ],
+          "loc": { "start": 1465, "end": 1549 }
         }
       ],
-      "loc": { "start": 0, "end": 1467 }
+      "loc": { "start": 0, "end": 1551 }
     }
   |}
 };

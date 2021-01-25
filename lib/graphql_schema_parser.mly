@@ -21,7 +21,9 @@
 %token ENUM
 %token SCALAR
 %token INPUT
+%token DIRECTIVE
 %token IMPLEMENTS
+%token ON
 %token AMPERSAND
 %token <string> SINGLE_LINE_STRING
 %token <string> MULTI_LINE_STRING
@@ -45,6 +47,7 @@ document:
 
 Definition:
   | TypeDefinition { TypeDefinition($1) }
+  | DirectiveDefinition { DirectiveDefinition($1) }
   ;
 
 TypeDefinition:
@@ -55,6 +58,10 @@ TypeDefinition:
   | ScalarTypeDefinition { Scalar($1) }
   | EnumTypeDefinition { Enum($1) }
   ;
+
+DirectiveDefinition:
+  // TODO: locations should be a defined set of values
+  | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) ON locations=separated_nonempty_list(PIPE, Name) { {name; arguments;description; locations;repeatable=false;loc=$loc } }
 
 ObjectTypeDefinition:
   | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
