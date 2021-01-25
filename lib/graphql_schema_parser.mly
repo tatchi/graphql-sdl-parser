@@ -170,4 +170,17 @@ NamedType:
 
 Name:
   | IDENTIFIER { {value=$1; loc=$loc} }
+  | value=tokenAsString { {value;loc=$loc} }
   ;
+
+%inline tokenAsString:
+  | ON { "on" }
+  | NULL { "null" }
+  | TYPE { "type" }
+  | INTERFACE { "interface" }
+  | UNION { "union" }
+  | ENUM { "enum" }
+  | SCALAR { "scalar" }
+  | DIRECTIVE { "directive" }
+  | IMPLEMENTS { "implements" }
+  | INPUT { "input" }
