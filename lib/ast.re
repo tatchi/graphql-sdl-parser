@@ -119,7 +119,7 @@ type interfaceType = {
   loc,
 };
 
-type enumValueDefinition = {
+type valueDefinition = {
   name,
   description,
   directives,
@@ -130,7 +130,7 @@ type enumType = {
   name,
   description,
   directives,
-  values: list(enumValueDefinition),
+  values: list(valueDefinition),
   loc,
 };
 
@@ -151,12 +151,12 @@ type inputObjectType = {
 };
 
 type typeDefinition =
-  // | Scalar(ScalarType<'a, T>),
   | Object(objectType)
   | Enum(enumType)
   | Interface(interfaceType)
   | Union(unionType)
-  | InputObject(inputObjectType);
+  | InputObject(inputObjectType)
+  | Scalar(valueDefinition);
 type definition =
   // | SchemaDefinition(string)
   | TypeDefinition(typeDefinition);
@@ -403,22 +403,22 @@ let unionToJson = (union: unionType) => {
   };
 };
 
-let enumValueDefinitionToJson = (enumValueDef: enumValueDefinition) => {
+let valueDefinitionToJson = (valueDef: valueDefinition, kind: string) => {
   let fields = [
-    ("kind", `String("EnumValueDefinition")),
-    ("name", nameToJson(enumValueDef.name)),
-    (
-      "directives",
-      `List(enumValueDef.directives |> List.map(directiveToJson)),
-    ),
-    locToJson(enumValueDef.loc),
+    ("kind", `String(kind)),
+    ("name", nameToJson(valueDef.name)),
+    ("directives", `List(valueDef.directives |> List.map(directiveToJson))),
+    locToJson(valueDef.loc),
   ];
-  switch (enumValueDef.description) {
+  switch (valueDef.description) {
   | None => `Assoc(fields)
   | Some(description) =>
     `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
+
+let enumValueDefinitionToJson = (valueDef: valueDefinition) =>
+  valueDefinitionToJson(valueDef, "EnumValueDefinition");
 
 let enumToJson = (enum: enumType) => {
   let fields = [
@@ -457,6 +457,8 @@ let inputObjectToJson = (inputObject: inputObjectType) => {
     `Assoc([("description", stringValueToJson(description)), ...fields])
   };
 };
+let scalarToJson = (scalar: valueDefinition) =>
+  valueDefinitionToJson(scalar, "ScalarTypeDefinition");
 
 let typeDefinitionToJson = typeDefinition =>
   switch (typeDefinition) {
@@ -465,6 +467,7 @@ let typeDefinitionToJson = typeDefinition =>
   | Enum(enum) => enumToJson(enum)
   | Union(union) => unionToJson(union)
   | InputObject(inputObject) => inputObjectToJson(inputObject)
+  | Scalar(scalar) => scalarToJson(scalar)
   };
 
 let definitionToJson = definition =>

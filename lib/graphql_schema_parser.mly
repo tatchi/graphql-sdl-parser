@@ -19,6 +19,7 @@
 %token INTERFACE
 %token UNION
 %token ENUM
+%token SCALAR
 %token INPUT
 %token IMPLEMENTS
 %token AMPERSAND
@@ -51,6 +52,7 @@ TypeDefinition:
   | ObjectTypeDefinition { Object($1) }
   | InterfaceTypeDefinition { Interface($1) }
   | UnionTypeDefinition { Union($1) }
+  | ScalarTypeDefinition { Scalar($1) }
   | EnumTypeDefinition { Enum($1) }
   ;
 
@@ -72,6 +74,10 @@ UnionTypeDefinition:
 
 InputObjectTypeDefinition:
   | description=option(StringValue) INPUT name=Name directives=Directives fields=loption(InputObjectFieldArguments)  { {name; fields; directives;description; loc=$loc } }
+  ;
+
+ScalarTypeDefinition:
+  | description=option(StringValue) SCALAR name=Name directives=Directives  { {name; directives;description; loc=$loc } }
   ;
 
 InputObjectFieldArguments:

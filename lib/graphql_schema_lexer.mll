@@ -50,6 +50,7 @@ rule read_token =
   | "interface" { INTERFACE }
   | "union" { UNION }
   | "enum" { ENUM }
+  | "scalar" { SCALAR }
   | "implements" { IMPLEMENTS }
   | "input" { INPUT }
   | "&" { AMPERSAND }

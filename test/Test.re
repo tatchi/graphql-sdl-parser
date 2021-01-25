@@ -48,9 +48,7 @@ let%expect_test _ = {
           commentary: String @innerDir
         }
 
-
-
-
+        "scalar description" scalar Date @dir(i:5)
 
 |},
     ),
@@ -1221,9 +1219,51 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1298, "end": 1413 }
+        },
+        {
+          "description": {
+            "kind": "StringValue",
+            "value": "scalar description",
+            "block": false,
+            "loc": { "start": 1423, "end": 1443 }
+          },
+          "kind": "ScalarTypeDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "Date",
+            "loc": { "start": 1451, "end": 1455 }
+          },
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir",
+                "loc": { "start": 1457, "end": 1460 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "i",
+                    "loc": { "start": 1461, "end": 1462 }
+                  },
+                  "value": {
+                    "kind": "IntValue",
+                    "value": 5,
+                    "loc": { "start": 1463, "end": 1464 }
+                  },
+                  "loc": { "start": 1461, "end": 1464 }
+                }
+              ],
+              "loc": { "start": 1456, "end": 1465 }
+            }
+          ],
+          "loc": { "start": 1423, "end": 1465 }
         }
       ],
-      "loc": { "start": 0, "end": 1419 }
+      "loc": { "start": 0, "end": 1467 }
     }
   |}
 };
