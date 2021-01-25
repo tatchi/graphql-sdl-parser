@@ -1,5 +1,47 @@
 type loc = (Lexing.position, Lexing.position);
 
+type directiveLocation =
+  | Query
+  | Mutation
+  | Subscription
+  | Field
+  | FragmentDefinition
+  | FragmentSpread
+  | InlineFragment
+  | Schema
+  | Scalar
+  | Object
+  | FieldDefinition
+  | ArgumentDefinition
+  | Interface
+  | Union
+  | Enum
+  | EnumValue
+  | InputObject
+  | InputFieldDefinition;
+
+let directiveLocationToString = directiveLoc =>
+  switch (directiveLoc) {
+  | Query => "QUERY"
+  | Mutation => "MUTATION"
+  | Subscription => "SUBSCRIPTION"
+  | Field => "FIELD"
+  | FragmentDefinition => "FRAGMENT_DEFINITION"
+  | FragmentSpread => "FRAGMENT_SPREAD"
+  | InlineFragment => "INLINE_FRAGMENT"
+  | Schema => "SCHEMA"
+  | Scalar => "SCALAR"
+  | Object => "OBJECT"
+  | FieldDefinition => "FIELD_DEFINITION"
+  | ArgumentDefinition => "ARGUMENT_DEFINITION"
+  | Interface => "INTERFACE"
+  | Union => "UNION"
+  | Enum => "ENUM"
+  | EnumValue => "ENUM_VALUE"
+  | InputObject => "INPUT_OBJECT"
+  | InputFieldDefinition => "INPUT_FIELD_DEFINITION"
+  };
+
 type name = {
   value: string,
   loc,
@@ -163,7 +205,7 @@ type directiveDefinition = {
   description,
   arguments: list(inputValueDefinition),
   repeatable: bool,
-  locations: list(name),
+  locations: list(string),
   loc,
 };
 
@@ -493,7 +535,7 @@ let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
     ("repeatable", `Bool(directiveDefinition.repeatable)),
     (
       "locations",
-      `List(directiveDefinition.locations |> List.map(nameToJson)),
+      `List(directiveDefinition.locations |> List.map(n => `String(n))),
     ),
     locToJson(directiveDefinition.loc),
   ];

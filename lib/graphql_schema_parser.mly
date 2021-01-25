@@ -28,6 +28,7 @@
 %token <string> SINGLE_LINE_STRING
 %token <string> MULTI_LINE_STRING
 %token <string> IDENTIFIER
+%token <string> DIRECTIVE_LOCATION
 %token <int> INT
 %token <float> FLOAT
 %token <bool> BOOL
@@ -61,7 +62,7 @@ TypeDefinition:
 
 DirectiveDefinition:
   // TODO: locations should be a defined set of values
-  | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) ON locations=separated_nonempty_list(PIPE, Name) { {name; arguments;description; locations;repeatable=false;loc=$loc } }
+  | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) ON locations=separated_nonempty_list(PIPE, DIRECTIVE_LOCATION) { {name; arguments;description; locations;repeatable=false;loc=$loc } }
 
 ObjectTypeDefinition:
   | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
@@ -166,7 +167,6 @@ NonNullableFieldType:
 NamedType:
   | Name { {name=$1; loc=$loc} }
   ;
-  
 
 Name:
   | IDENTIFIER { {value=$1; loc=$loc} }

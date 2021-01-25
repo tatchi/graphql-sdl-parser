@@ -21,6 +21,7 @@ let whitespace = [' ' ',' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 let string = "\"[^\"]*\""
 let quoted = '"'([^'\n']*)'"'
+let directiveLocation = "QUERY" | "MUTATION" | "INPUT_FIELD_DEFINITION"
 
 rule read_token =
   parse
@@ -56,6 +57,7 @@ rule read_token =
   | "input" { INPUT }
   | "on" { ON }
   | "&" { AMPERSAND }
+  | directiveLocation { DIRECTIVE_LOCATION ( Lexing.lexeme lexbuf)}
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
   | "#" { read_single_line_comment lexbuf }
   | eof { EOF }
