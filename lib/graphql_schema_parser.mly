@@ -23,6 +23,7 @@
 %token INPUT
 %token DIRECTIVE
 %token IMPLEMENTS
+%token REPEATABLE
 %token ON
 %token AMPERSAND
 %token <string> SINGLE_LINE_STRING
@@ -61,8 +62,17 @@ TypeDefinition:
   ;
 
 DirectiveDefinition:
-  // TODO: locations should be a defined set of values
-  | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) ON locations=separated_nonempty_list(PIPE, DIRECTIVE_LOCATION) { {name; arguments;description; locations;repeatable=false;loc=$loc } }
+  | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) repeatable=Repeatable ON locations=separated_nonempty_list(PIPE, DirectiveLocation) { {name; arguments;description; locations;repeatable;loc=$loc } }
+
+
+Repeatable:
+  | option(REPEATABLE) { match $1 with
+    | None -> false
+    | Some _ -> true
+  } 
+
+DirectiveLocation:
+  | DIRECTIVE_LOCATION { {value=directiveLocationOfString($1); loc=$loc} }
 
 ObjectTypeDefinition:
   | description=option(StringValue) TYPE name=Name interfaces=loption(Implementations) directives=Directives fields=loption(Fields) { {name; fields; interfaces; directives;description; loc=$loc } }
@@ -184,3 +194,5 @@ Name:
   | DIRECTIVE { "directive" }
   | IMPLEMENTS { "implements" }
   | INPUT { "input" }
+  | REPEATABLE { "repeatable" }
+  | directiveLocation=DIRECTIVE_LOCATION { directiveLocation }

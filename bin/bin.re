@@ -1,5 +1,5 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|type on|},
+    {|directive @skip repeatable on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT|},
   ),
 );

@@ -20,6 +20,29 @@ type directiveLocation =
   | InputObject
   | InputFieldDefinition;
 
+let directiveLocationOfString = s =>
+  switch (s) {
+  | "QUERY" => Query
+  | "MUTATION" => Mutation
+  | "SUBSCRIPTION" => Subscription
+  | "FIELD" => Field
+  | "FRAGMENT_DEFINITION" => FragmentDefinition
+  | "FRAGMENT_SPREAD" => FragmentSpread
+  | "INLINE_FRAGMENT" => InlineFragment
+  | "SCHEMA" => Schema
+  | "SCALAR" => Scalar
+  | "OBJECT" => Object
+  | "FIELD_DEFINITION" => FieldDefinition
+  | "ARGUMENT_DEFINITION" => ArgumentDefinition
+  | "INTERFACE" => Interface
+  | "UNION" => Union
+  | "ENUM" => Enum
+  | "ENUM_VALUE" => EnumValue
+  | "INPUT_OBJECT" => InputObject
+  | "INPUT_FIELD_DEFINITION" => InputFieldDefinition
+  | _ => failwith("Invalid directive location")
+  };
+
 let directiveLocationToString = directiveLoc =>
   switch (directiveLoc) {
   | Query => "QUERY"
@@ -200,12 +223,17 @@ type typeDefinition =
   | InputObject(inputObjectType)
   | Scalar(valueDefinition);
 
+type directiveDefinition_location = {
+  value: directiveLocation,
+  loc,
+};
+
 type directiveDefinition = {
   name,
   description,
   arguments: list(inputValueDefinition),
   repeatable: bool,
-  locations: list(string),
+  locations: list(directiveDefinition_location),
   loc,
 };
 
@@ -522,6 +550,14 @@ let typeDefinitionToJson = typeDefinition =>
   | Scalar(scalar) => scalarToJson(scalar)
   };
 
+let directiveLocationToJson =
+    (directiveLocation: directiveDefinition_location) =>
+  `Assoc([
+    ("kind", `String("Name")),
+    ("value", `String(directiveLocation.value |> directiveLocationToString)),
+    locToJson(directiveLocation.loc),
+  ]);
+
 let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
   let fields = [
     ("kind", `String("DirectiveDefinition")),
@@ -535,7 +571,7 @@ let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
     ("repeatable", `Bool(directiveDefinition.repeatable)),
     (
       "locations",
-      `List(directiveDefinition.locations |> List.map(n => `String(n))),
+      `List(directiveDefinition.locations |> List.map(directiveLocationToJson)),
     ),
     locToJson(directiveDefinition.loc),
   ];

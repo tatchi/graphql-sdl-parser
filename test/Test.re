@@ -51,6 +51,7 @@ let%expect_test _ = {
         "scalar description" scalar Date @dir(i:5)
 
         directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+        directive @new(if: MUTATION!) repeatable on FIELD
 
 |},
     ),
@@ -1315,9 +1316,51 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1470, "end": 1554 }
+        },
+        {
+          "kind": "DirectiveDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "new",
+            "loc": { "start": 1574, "end": 1577 }
+          },
+          "arguments": [
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "if",
+                "loc": { "start": 1578, "end": 1580 }
+              },
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "MUTATION",
+                    "loc": { "start": 1582, "end": 1590 }
+                  },
+                  "loc": { "start": 1582, "end": 1590 }
+                },
+                "loc": { "start": 1582, "end": 1591 }
+              },
+              "directives": [],
+              "loc": { "start": 1578, "end": 1591 }
+            }
+          ],
+          "repeatable": true,
+          "locations": [
+            {
+              "kind": "Name",
+              "value": "FIELD",
+              "loc": { "start": 1607, "end": 1612 }
+            }
+          ],
+          "loc": { "start": 1554, "end": 1612 }
         }
       ],
-      "loc": { "start": 0, "end": 1556 }
+      "loc": { "start": 0, "end": 1614 }
     }
   |}
 };

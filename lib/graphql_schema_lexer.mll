@@ -24,7 +24,25 @@ let whitespace = [' ' ',' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 let string = "\"[^\"]*\""
 let quoted = '"'([^'\n']*)'"'
-let directiveLocation = "QUERY" | "MUTATION" | "INPUT_FIELD_DEFINITION"
+let directiveLocation =  
+      "QUERY"|
+      "MUTATION"|
+      "SUBSCRIPTION"|
+      "FIELD"|
+      "FRAGMENT_DEFINITION"|
+      "FRAGMENT_SPREAD"|
+      "INLINE_FRAGMENT"|
+      "SCHEMA"|
+      "SCALAR"|
+      "OBJECT"|
+      "FIELD_DEFINITION"|
+      "ARGUMENT_DEFINITION"|
+      "INTERFACE"|
+      "UNION"|
+      "ENUM"|
+      "ENUM_VALUE"|
+      "INPUT_OBJECT"|
+      "INPUT_FIELD_DEFINITION"
 
 rule read_token =
   parse
@@ -58,6 +76,7 @@ rule read_token =
   | "directive" { DIRECTIVE }
   | "implements" { IMPLEMENTS }
   | "input" { INPUT }
+  | "repeatable" { REPEATABLE }
   | "on" { ON }
   | "&" { AMPERSAND }
   | directiveLocation { DIRECTIVE_LOCATION ( Lexing.lexeme lexbuf)}
