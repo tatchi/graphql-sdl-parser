@@ -76,6 +76,10 @@ rule read_token =
   | "directive" { DIRECTIVE }
   | "implements" { IMPLEMENTS }
   | "input" { INPUT }
+  | "schema" { SCHEMA }
+  | "query" { QUERY }
+  | "mutation" { MUTATION }
+  | "subscription" { SUBSCRIPTION }
   | "repeatable" { REPEATABLE }
   | "on" { ON }
   | "&" { AMPERSAND }

@@ -24,6 +24,10 @@
 %token DIRECTIVE
 %token IMPLEMENTS
 %token REPEATABLE
+%token SCHEMA
+%token MUTATION
+%token QUERY
+%token SUBSCRIPTION
 %token ON
 %token AMPERSAND
 %token <string> SINGLE_LINE_STRING
@@ -50,6 +54,7 @@ document:
 Definition:
   | TypeDefinition { TypeDefinition($1) }
   | DirectiveDefinition { DirectiveDefinition($1) }
+  | SchemaDefinition { SchemaDefinition($1) }
   ;
 
 TypeDefinition:
@@ -63,7 +68,19 @@ TypeDefinition:
 
 DirectiveDefinition:
   | description=option(StringValue) DIRECTIVE AT name=Name arguments=loption(FieldArguments) repeatable=Repeatable ON locations=separated_nonempty_list(PIPE, DirectiveLocation) { {name; arguments;description; locations;repeatable;loc=$loc } }
+  ;
 
+SchemaDefinition:
+  |  description=option(StringValue) SCHEMA directives=Directives LBRACE operationTypes=nonempty_list(OperationType) RBRACE { {description; directives;operationTypes;loc=$loc } }
+
+
+OperationType:
+  | operation=Operation COLON type_=NamedType { {operation;type_;loc=$loc} }
+
+Operation:
+  | QUERY { Query }
+  | MUTATION { Mutation }
+  | SUBSCRIPTION { Subscription }
 
 Repeatable:
   | option(REPEATABLE) { match $1 with
@@ -195,4 +212,8 @@ Name:
   | IMPLEMENTS { "implements" }
   | INPUT { "input" }
   | REPEATABLE { "repeatable" }
+  | SCHEMA  { "schema" }
+  | QUERY  { "query" }
+  | MUTATION { "mutation"  }
+  | SUBSCRIPTION  { "subscription" }
   | directiveLocation=DIRECTIVE_LOCATION { directiveLocation }

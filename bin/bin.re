@@ -1,5 +1,7 @@
 print_endline(
   Graphql_sdl_parser.pp(
-    {|directive @skip repeatable on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT|},
+    {|schema @dir(id: 5){
+      query: Query
+    }|},
   ),
 );

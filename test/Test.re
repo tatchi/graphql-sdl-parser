@@ -53,6 +53,13 @@ let%expect_test _ = {
         directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
         directive @new(if: MUTATION!) repeatable on FIELD
 
+        "Schema"
+        schema @dir(id: 5){
+          query: Query
+          mutation: Mutation
+          subscription: Subscription
+        }
+
 |},
     ),
   );
@@ -1358,9 +1365,90 @@ let%expect_test _ = {
             }
           ],
           "loc": { "start": 1554, "end": 1612 }
+        },
+        {
+          "description": {
+            "kind": "StringValue",
+            "value": "Schema",
+            "block": false,
+            "loc": { "start": 1622, "end": 1630 }
+          },
+          "kind": "SchemaDefinition",
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "dir",
+                "loc": { "start": 1647, "end": 1650 }
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "id",
+                    "loc": { "start": 1651, "end": 1653 }
+                  },
+                  "value": {
+                    "kind": "IntValue",
+                    "value": 5,
+                    "loc": { "start": 1655, "end": 1656 }
+                  },
+                  "loc": { "start": 1651, "end": 1656 }
+                }
+              ],
+              "loc": { "start": 1646, "end": 1657 }
+            }
+          ],
+          "operationTypes": [
+            {
+              "kind": "OperationTypeDefinition",
+              "operation": "query",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Query",
+                  "loc": { "start": 1676, "end": 1681 }
+                },
+                "loc": { "start": 1676, "end": 1681 }
+              },
+              "loc": { "start": 1669, "end": 1681 }
+            },
+            {
+              "kind": "OperationTypeDefinition",
+              "operation": "mutation",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Mutation",
+                  "loc": { "start": 1702, "end": 1710 }
+                },
+                "loc": { "start": 1702, "end": 1710 }
+              },
+              "loc": { "start": 1692, "end": 1710 }
+            },
+            {
+              "kind": "OperationTypeDefinition",
+              "operation": "subscription",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Subscription",
+                  "loc": { "start": 1735, "end": 1747 }
+                },
+                "loc": { "start": 1735, "end": 1747 }
+              },
+              "loc": { "start": 1721, "end": 1747 }
+            }
+          ],
+          "loc": { "start": 1622, "end": 1757 }
         }
       ],
-      "loc": { "start": 0, "end": 1614 }
+      "loc": { "start": 0, "end": 1759 }
     }
   |}
 };

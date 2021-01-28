@@ -237,8 +237,33 @@ type directiveDefinition = {
   loc,
 };
 
+type operation =
+  | Query
+  | Mutation
+  | Subscription;
+
+let operationToString = operation =>
+  switch (operation) {
+  | Query => "query"
+  | Mutation => "mutation"
+  | Subscription => "subscription"
+  };
+
+type operationTypeDefinition = {
+  operation,
+  type_: namedType,
+  loc,
+};
+
+type schemaDefinition = {
+  description,
+  directives,
+  operationTypes: list(operationTypeDefinition),
+  loc,
+};
+
 type definition =
-  // | SchemaDefinition(string)
+  | SchemaDefinition(schemaDefinition)
   | TypeDefinition(typeDefinition)
   | DirectiveDefinition(directiveDefinition);
 
@@ -571,7 +596,9 @@ let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
     ("repeatable", `Bool(directiveDefinition.repeatable)),
     (
       "locations",
-      `List(directiveDefinition.locations |> List.map(directiveLocationToJson)),
+      `List(
+        directiveDefinition.locations |> List.map(directiveLocationToJson),
+      ),
     ),
     locToJson(directiveDefinition.loc),
   ];
@@ -583,11 +610,44 @@ let directiveDefinitionToJson = (directiveDefinition: directiveDefinition) => {
   };
 };
 
+let operationTypeToJson = (operationType: operationTypeDefinition) =>
+  `Assoc([
+    ("kind", `String("OperationTypeDefinition")),
+    ("operation", `String(operationType.operation |> operationToString)),
+    ("type", namedTypeToJson(operationType.type_)),
+    locToJson(operationType.loc),
+  ]);
+
+let schemaDefinitionToJson = (schemaDefinition: schemaDefinition) => {
+  let fields = [
+    ("kind", `String("SchemaDefinition")),
+    (
+      "directives",
+      `List(schemaDefinition.directives |> List.map(directiveToJson)),
+    ),
+    (
+      "operationTypes",
+      `List(
+        schemaDefinition.operationTypes |> List.map(operationTypeToJson),
+      ),
+    ),
+    locToJson(schemaDefinition.loc),
+  ];
+
+  switch (schemaDefinition.description) {
+  | None => `Assoc(fields)
+  | Some(description) =>
+    `Assoc([("description", stringValueToJson(description)), ...fields])
+  };
+};
+
 let definitionToJson = definition =>
   switch (definition) {
   | TypeDefinition(typeDefinition) => typeDefinitionToJson(typeDefinition)
   | DirectiveDefinition(directiveDefinition) =>
     directiveDefinitionToJson(directiveDefinition)
+  | SchemaDefinition(schemaDefinition) =>
+    schemaDefinitionToJson(schemaDefinition)
   };
 
 let toJson = document =>
